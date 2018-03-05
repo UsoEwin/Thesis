@@ -1,25 +1,27 @@
-module linelength(
-
-	input signed [31:0] din,
+module linelength #(
+	parameter data_width = 32
+)(	
+	input signed [data_width-1:0] din,
 	input en,rst,clk, //rst active high,en active low
-	output reg signed [31:0] dout
+	output reg signed [data_width-1:0] dout
 	);
 	
-	reg signed [31:0] din_delayed = 0;
+	reg signed [data_width-1:0] din_delayed = 0;
 
 	always @(posedge clk) begin
 
 		if (rst) begin
-			dout <= 31'b0;
-			din_delayed <= 31'b0;
+			dout <= 0;
+			din_delayed <= 0;
 		end
 
 		else if (~en) begin
 			dout <= $signed(din) - $signed(din_delayed); //need abs
-			if (dout[31] == 1'b1) begin
+			if (dout[data_width-1] == 1'b1) begin //negative value
 				dout <= -dout;
 			end
+			din_delayed <= din;//from last clk cycle
 		end
-		din_delayed <= din;//from last clk cycle
+		//if en is high, just hold
 	end
 endmodule
