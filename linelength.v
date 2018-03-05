@@ -1,3 +1,7 @@
+//
+//this module will perform dout = abs(din[i] - din[i-1])
+//here i is time stamp
+//
 module linelength #(
 	parameter data_width = 32
 )(	
@@ -9,7 +13,7 @@ module linelength #(
 	reg signed [data_width-1:0] din_delayed = 0;
 
 	always @(posedge clk) begin
-
+		//sync reset
 		if (rst) begin
 			dout <= 0;
 			din_delayed <= 0;
