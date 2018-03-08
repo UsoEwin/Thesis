@@ -4,10 +4,10 @@
 //here i is time stamp
 //
 module ps_comp_unit #(
-	parameter input_width = 32,
+	parameter data_width = 32,
 	parameter output_width = 64
 )(	
-	input signed [input_width-1:0] din,
+	input signed [data_width-1:0] din,
 	input en,rst,clk, //rst active high,en active low
 	output wire signed [output_width-1:0] dout,
 	output wire data_valid

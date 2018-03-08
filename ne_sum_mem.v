@@ -5,17 +5,17 @@
 //IMPORTANT: ingnore the 1/(N-2) in the formula due to the cost of division
 //
 module ne_comp_unit #(
-	parameter input_width = 32,
+	parameter data_width = 32,
 	parameter output_width = 64
 )(	
-	input signed [input_width-1:0] din,
+	input signed [data_width-1:0] din,
 	input en,rst,clk, //rst active high,en active low
 	output wire signed [output_width-1:0] dout,
 	output wire data_valid
 	);
 	//initial value, avoid latch
-	reg signed [input_width-1:0] din_delayed_by_1 = 0;
-	reg signed [input_width-1:0] din_delayed_by_2 = 0;
+	reg signed [data_width-1:0] din_delayed_by_1 = 0;
+	reg signed [data_width-1:0] din_delayed_by_2 = 0;
 	reg signed [output_width-1:0] dout_buffer = 0; 
 
 	always @(posedge clk) begin

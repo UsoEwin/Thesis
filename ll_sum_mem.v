@@ -1,14 +1,15 @@
 //
-//in this project, we are assumimg all inputs are integers
-//this module will perform dout = abs(din[i] - din[i-1])
-//here i is time stamp
+//this file will store the output from ll_comp_unit
+//and perform summation on the data output of this should go to controller
 //
-module ll_comp_unit #(
-	parameter input_width = 32
+module ll_sum_mem #(
+	parameter input_width = 32,
+	parameter output_width = 64, //please accrodingly modify this line for different data width.
+	parameter window_size = 32
 )(	
 	input signed [input_width-1:0] din,
 	input en,rst,clk, //rst active high,en active low
-	output wire signed [input_width-1:0] dout,
+	output wire signed [output_width-1:0] dout,
 	output wire data_valid //to the mem block, indicate current data is good
 	);
 	
