@@ -1,7 +1,6 @@
 `timescale 1ns/100ps
 
-//this is for unit test of linelength module
-//all test cases passed
+//this is for unit test of ll_comp_unit
 
 //second and ms
 `define SEC 1000000000
@@ -40,35 +39,21 @@ module tb_linelength;
 			
 		end
 */
+//
 	initial begin: TB
-		a <= 1'b0;
-		b <= 1'b0;
+		test_din <= 0;
+		test_din_delay <= 0;
+		test_rst <= 0;
+		test_en <= 1;
 
-		repeat(5) @ (posedge clk);
-		a <= 32'd1000;
-		b <= 32'd300;
-
-		repeat(5) @ (posedge clk);
-		a <= 32'd10000;
-		b <= 32'd5555;
-		
-		repeat(5) @ (posedge clk);
-		a <= -32'd1111;
-		b <= -32'd2222;
-		
-		repeat(5) @ (posedge clk);
-		a <= -32'd1111;
-		b <= 32'd2222;
-		
-		repeat(5) @ (posedge clk);
-		a <= 32'd0;
-		b <= 32'hffff_ffff;
-		
-		repeat(5) @ (posedge clk);
-		a <= 32'hffff_fffe;
-		b <= 32'hffff_eeee;
-		
-		repeat(10) @ (posedge clk);
+		repeat(5) @ (posedge test_clk);
+		test_din <= $urandom();
+		test_rst <= 1'b1;
+		repeat(1) @ (posedge test_clk);
+		if (test_dout != 0) begin
+			
+		end
+		//expecting 0 as output
 
 		$finish();
 	end
