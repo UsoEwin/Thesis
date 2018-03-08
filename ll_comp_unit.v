@@ -1,5 +1,5 @@
 //
-//in this project, we are assumimg all inputs are integer
+//in this project, we are assumimg all inputs are integers
 //this module will perform dout = abs(din[i] - din[i-1])
 //here i is time stamp
 //
@@ -37,5 +37,5 @@ module ll_comp_unit #(
 		end
 	end
 	assign dout = (dout_mid1 > 0)? dout_mid1 : dout_mid2; //data can be X
-	assign data_valid = (en == 1'b0);
+	assign data_valid = (en === 1'b0);
 endmodule
