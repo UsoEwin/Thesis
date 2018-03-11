@@ -1,0 +1,14 @@
+The HDL Coder repo for Hardware Subgroup
+
+log file:
+
+done:
+
+	unit computing module for line-length
+	unit computing module for power spectrum
+	unit computing module for non-linear energy
+
+Todo:
+
+	testbench for 3 unit computing modules
+	testbench overall system(read in the test dataflow and gain a output)

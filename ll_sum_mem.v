@@ -10,12 +10,13 @@ module ll_sum_mem #(
 	input signed [input_width-1:0] din,
 	input en,rst,clk, //rst active high,en active low
 	output wire signed [output_width-1:0] dout,
-	output wire data_valid //to the mem block, indicate current data is good
-	);
+	input wire data_valid //from the computing unit
 	
-	reg signed [input_width-1:0] din_delayed = 0;
-	reg signed [input_width-1:0] dout_mid1 = 0;
-	reg signed [input_width-1:0] dout_mid2 = 0;
+
+	reg [input_width-1:0] mem[window_size-1:0];
+
+	
+
 	always @(posedge clk) begin
 		//sync reset
 		if (rst) begin
