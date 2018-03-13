@@ -11,7 +11,7 @@
 //clk cycle
 `define CLK_PERIOD 30
 `define DATA_WIDTH 32
-module tb_linelength;
+module tb_unit_linelength;
 	
   	reg signed [`DATA_WIDTH-1:0] test_din = 0;
 	reg test_clk = 0;
