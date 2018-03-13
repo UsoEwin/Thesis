@@ -37,8 +37,8 @@ module tb_linelength;
 //it seems that this trivial implementation won't need task
 
 	initial begin: TB
-        $dumpfile("dump.vcd");
-  		$dumpvars(1);
+        $dumpfile("dump.vcd"); //for eda playground wave form
+  		$dumpvars(1);	//
 		test_din <= 0;
 		test_din_delay <= 0;
 		test_rst <= 0;
