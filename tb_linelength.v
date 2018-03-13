@@ -11,17 +11,17 @@
 `define DATA_WIDTH 32
 module tb_linelength;
 	
-	reg signed [DATA_WIDTH-1:0] test_din = 0;
+  reg signed [`DATA_WIDTH-1:0] test_din = 0;
 	reg test_clk = 0;
 	reg test_rst = 0;
 	reg test_en = 0;
-	reg signed [DATA_WIDTH-1:0] test_din_delay = 0;
-	reg signed [DATA_WIDTH-1:0] test_dout = 0; //benchmark value.
+  	reg signed [`DATA_WIDTH-1:0] test_din_delay = 0;
+  	wire signed [`DATA_WIDTH-1:0] test_dout = 0; //benchmark value.
 //generate clk
 	always #(`CLK_PERIOD/2) test_clk = ~test_clk;
 //instantiate the DUT
-	linelength #(
-		.data_width(`DATA_WIDTH-1)
+	ll_comp_unit #(
+		.input_width(`DATA_WIDTH-1)
 	) DUT (
 		.clk(test_clk),
 		.rst(test_rst),
@@ -31,15 +31,7 @@ module tb_linelength;
 	);
 //test tasks begin here, add more if needed
 //it seems that this trivial implementation won't need task
-/*
-	task feed_random;
-		input [`DATA_WIDTH-1:0] din_a;
-		input rst_a;
-		begin
-			
-		end
-*/
-//
+
 	initial begin: TB
 		test_din <= 0;
 		test_din_delay <= 0;
@@ -47,13 +39,15 @@ module tb_linelength;
 		test_en <= 1;
 
 		repeat(5) @ (posedge test_clk);
-		test_din <= $urandom();
+		test_din <= 1;
+		test_din_delay <= test_din;
 		test_rst <= 1'b1;
 		repeat(1) @ (posedge test_clk);
-		if (test_dout != 0) begin
+      	if (test_dout !== 0) begin
 			
 		end
 		//expecting 0 as output
 
 		$finish();
 	end
+endmodule
