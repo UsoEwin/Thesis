@@ -13,13 +13,12 @@
 `define DATA_WIDTH 32
 module tb_unit_linelength;
 	
-  	reg signed [`DATA_WIDTH-1:0] test_din = 0;
-	reg test_clk = 0;
-	reg test_rst = 0;
-	reg test_en = 0;
-  	reg signed [`DATA_WIDTH-1:0] test_din_delay = 0;
-  	wire signed [`DATA_WIDTH:0] test_dout = 0; //benchmark value.
-  	wire test_data_valid = 0;
+  	reg signed [`DATA_WIDTH-1:0] test_din;
+	reg test_clk = 1'b0;
+	reg test_rst;
+	reg test_en;
+  	wire signed [`DATA_WIDTH:0] test_dout; //benchmark value.
+  	wire test_data_valid;
 //generate clk
 	always #(`CLK_PERIOD/2) test_clk = ~test_clk;
 //instantiate the DUT
@@ -38,23 +37,19 @@ module tb_unit_linelength;
 
 	initial begin: TB
         $dumpfile("dump.vcd"); //for eda playground wave form
-  		$dumpvars(1);	//
+  		$dumpvars(1);	
+        $monitor($time,,"din is %d. dout is %d",test_din, test_dout);
 		test_din <= 0;
-		test_din_delay <= 0;
-		test_rst <= 0;
+		test_rst <= 1'b1;
 		test_en <= 0;
+        @(posedge test_clk);
+      	test_rst <= 1'b0;
 
-      repeat(1) @ (posedge test_clk);
-		test_din <= 1;
-		test_din_delay <= test_din;
-      repeat(1) @ (posedge test_clk);      
-      	test_din <= 10;
-      	test_din_delay <= test_din;
-      //$display("test_din is = %d", test_din);
-      //$display("test_din_delay is = %d", test_din_delay);
-      repeat(1) @ (posedge test_clk);
-      $display("test_dout is not 0. test_dout = %d", test_dout);
+        repeat(20) begin 
+        @(posedge test_clk);
+		test_din <= $random % 100;
+      end
       repeat(4) @ (posedge test_clk);
-		$finish();
+	$finish();
 	end
 endmodule
