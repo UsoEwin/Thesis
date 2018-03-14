@@ -20,7 +20,7 @@ todo:
 
 	testbench overall system(read in the test dataflow and gain a output on software)
 
-    interfacing -- at least light up some LED
+    interfacing -- at least light up some LEDs
     
 
 Chen: 	tb updated, can be used by all modules.
