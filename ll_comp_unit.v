@@ -3,7 +3,7 @@
 //this module will perform dout = abs(din[i] - din[i-1])
 //here i is time stamp
 //
-// Code your design here
+//under testing
 module ll_comp_unit #(
 	parameter input_width = 32
 )(	
@@ -13,24 +13,51 @@ module ll_comp_unit #(
 	output wire 			   data_valid //to the mem block, indicate current data is good
 	);
 	
-    reg signed [input_width-1:0] 	   din_delayed = 0;
-  	reg signed [input_width:0] dout_mid1 = 0;
-  	reg signed [input_width:0] dout_mid2 = 0;
+
+	
+  reg signed [input_width:0] dout_mid1 = 0;
+  reg signed [input_width:0] dout_mid2 = 0;
+  	wire signed [input_width-1:0] din_delayed = 0;
+  ff #(input_width) myff (
+      .din(din),.en(en),.clk(clk),.rst(rst),.dout(din_delayed)
+  		);
+
 	always @(posedge clk) begin
 		//sync reset
 		if (rst) begin
 			dout_mid1 <= 0;
-			dout_mid2 <= 0;
-			din_delayed <= 0;
+          	dout_mid1 <= 0;
 		end
 
 		else if (~en) begin
 			dout_mid1 <= $signed(din) - $signed(din_delayed); 
-			dout_mid2 <= -($signed(din) - $signed(din_delayed));
-			din_delayed <= din;//from last clk cycle
+          	dout_mid2 <= -($signed(din) - $signed(din_delayed));
 		end
 		//if en is high, just hold
 	end
- 	assign dout = (dout_mid1 >= 0)? dout_mid1 : dout_mid2; //data can be X
+  assign dout = (dout_mid1 > 0)? $signed(dout_mid1) : $signed(dout_mid2); //data can be X
   	assign data_valid = (en == 0);
+endmodule
+
+//ff
+module ff #(
+	parameter input_width = 32
+)(	
+	input signed [input_width-1:0]	din,
+	input en,rst,clk, //rst active high,en active low
+  	output wire signed [input_width-1:0] dout
+	);
+	
+  	reg signed [input_width-1:0] dout_delayed = 0;
+	always @(posedge clk) begin
+		//sync reset
+		if (rst) begin
+			dout_delayed <= 0;
+		end
+
+		else if (~en) begin
+			dout_delayed <= din;
+		end
+	end
+  	assign dout = dout_delayed;
 endmodule

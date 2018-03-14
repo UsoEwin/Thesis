@@ -24,7 +24,7 @@ module tb_unit_linelength;
 	always #(`CLK_PERIOD/2) test_clk = ~test_clk;
 //instantiate the DUT
 	ll_comp_unit #(
-		.input_width(`DATA_WIDTH-1)
+		.input_width(`DATA_WIDTH)
 	) DUT (
 		.clk(test_clk),
 		.rst(test_rst),
