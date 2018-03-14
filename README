@@ -14,3 +14,6 @@ todo:
 	tb for ne unit //functionality test done
 	testbench for 3 unit computing modules //use isim instead of eda playground
 	testbench overall system(read in the test dataflow and gain a output on software)
+
+Chen: 	tb updated, can be used by all modules.
+	Remember to change DUT name to corresponding module when using it!
