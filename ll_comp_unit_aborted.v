@@ -1,4 +1,6 @@
-//
+//aborted version of ll comp unit, check the ll comp unit for now version
+
+
 //in this project, we are assumimg all inputs are integers
 //this module will perform dout = abs(din[i] - din[i-1])
 //here i is time stamp
