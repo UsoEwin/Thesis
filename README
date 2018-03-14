@@ -2,6 +2,8 @@ The HDL Coder repo for Hardware Subgroup
 
 log file:
 
+last update time: March 14 //please modify this whenever you want to push a update
+
 done:
 
 	unit computing module for line-length
@@ -9,11 +11,19 @@ done:
 	unit computing module for non-linear energy
 	tb for synch fifo
 	tb for linelength computing unit
-todo:
 	tb for ps unit
 	tb for ne unit //functionality test done
-	testbench for 3 unit computing modules //use isim instead of eda playground
+
+todo:
+
+	testbench for 3 unit computing modules(use isim instead of eda playground, modules means we need to combine the unit with FIFO)
+
 	testbench overall system(read in the test dataflow and gain a output on software)
+
+    interfacing -- at least light up some LED
+    
 
 Chen: 	tb updated, can be used by all modules.
 	Remember to change DUT name to corresponding module when using it!
+
+Jingbo: splited 3 diff unit tb, IIR filter added.

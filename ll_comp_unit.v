@@ -12,12 +12,9 @@ module ll_comp_unit #(
   	output wire signed [input_width:0] dout, 
 	output wire 			   data_valid //to the mem block, indicate current data is good
 	);
-	
-
-	
-  reg signed [input_width:0] dout_mid1 = 0;
-  reg signed [input_width:0] dout_mid2 = 0;
-  	wire signed [input_width-1:0] din_delayed = 0;
+  reg signed [input_width:0] dout_mid1;
+  reg signed [input_width:0] dout_mid2;
+  	wire signed [input_width-1:0] din_delayed;
   ff #(input_width) myff (
       .din(din),.en(en),.clk(clk),.rst(rst),.dout(din_delayed)
   		);
@@ -48,7 +45,7 @@ module ff #(
   	output wire signed [input_width-1:0] dout
 	);
 	
-  	reg signed [input_width-1:0] dout_delayed = 0;
+  	reg signed [input_width-1:0] dout_delayed;
 	always @(posedge clk) begin
 		//sync reset
 		if (rst) begin
