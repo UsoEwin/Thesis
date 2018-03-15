@@ -3,7 +3,7 @@
 //this module will perform dout = abs(din[i] - din[i-1])
 //here i is time stamp
 //
-//under testing
+//all test case passed
 module ll_comp_unit #(
 	parameter input_width = 32
 )(	

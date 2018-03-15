@@ -4,6 +4,7 @@
 //here i is time stamp
 //IMPORTANT: ingnore the 1/(N-2) in the formula due to the cost of division
 //
+//all test case passed
 module ne_comp_unit #(
 	parameter input_width = 32,
 	parameter output_width = 64
