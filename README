@@ -13,6 +13,8 @@ done:
 	tb for linelength computing unit
 	tb for ps unit
 	tb for ne unit //functionality test done
+    unit accu 
+    tb for unit accu 
 
 todo:
 
