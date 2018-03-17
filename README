@@ -15,10 +15,12 @@ done:
 	tb for ne unit //functionality test done
     unit accu 
     tb for unit accu //now instead of using FIFO, we will just use a shift reg
-
+    shift regs
 todo:
 	
 	testbench for IIR filter
+
+	shift regs
 	
 	testbench for 3 unit computing modules(use isim instead of eda playground, modules means we need to combine the unit with FIFO)
 
