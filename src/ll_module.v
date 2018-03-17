@@ -3,16 +3,20 @@
 //
 // under testing
 module ll_module #(
+	
 	parameter input_width = 16, 
-	parameter mid_width = 22,//computed by 32+log(50) change this for ps and ne
-	parameter output_width = 25 //computed by 37+log(5)
+	parameter mid_width = 22,//computed by 16+log(50) change this for ps and ne
+	parameter output_width = 25 //computed by 22+log(5)
+
 )(	
 	//input will be the same as ll unit
 	input signed [input_width-1:0]	din,
 	input en,rst,clk, //rst active high,en active low
   	output wire signed [output_width-1:0] dout, 
 	output wire 			   data_valid //to controller
+
 	);
+
 	//ll_comp_unit
 	wire signed [input_width:0] unit_out; // 1 bit for carry
 	wire data_valid_unit //useless

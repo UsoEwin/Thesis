@@ -3,17 +3,21 @@
 //
 // under testing
 module ps_module #(
+
 	parameter input_width = 16, 
 	parameter unit_width = 32,
 	parameter mid_width = 37,//computed by 32+log(50) change this for ps and ne
 	parameter output_width = 40 //computed by 37+log(5)
+
 )(	
 	//input will be the same as ll unit
 	input signed [input_width-1:0]	din,
 	input en,rst,clk, //rst active high,en active low
   	output wire signed [output_width-1:0] dout, 
 	output wire 			   data_valid //to controller
+
 	);
+
 	//ps_comp_unit
 	wire signed [unit_width-1:0] unit_out;
 	wire data_valid_unit //useless
@@ -52,6 +56,7 @@ module ps_module #(
 		.din3(shift_reg_out3),.din4(shift_reg_out4),
 		.din5(shift_reg_out5),.dout(adder_out)
 		);
+	
 	//final output
 	assign dout = adder_out;
 endmodule
