@@ -4,7 +4,7 @@
 // under testing
 module ne_module #(
 	parameter input_width = 16, 
-	parameter unit_width = 32
+	parameter unit_width = 32,
 	parameter mid_width = 37,//computed by 32+log(50) change this for ps and ne
 	parameter output_width = 40 //computed by 37+log(5)
 )(	
