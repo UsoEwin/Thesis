@@ -16,6 +16,6 @@ module adder #(
 	output signed [output_width-1:0] dout
 	);
 
-	assign dout = din5+din4+din3+din2+din1;
+	assign dout = $signed(din5)+$signed(din4)+$signed(din3)+$signed(din2)+$signed(din1);
 endmodule
 

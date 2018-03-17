@@ -20,7 +20,7 @@ todo:
 	
 	testbench for IIR filter
 
-	shift regs
+    tb for shift regs
 	
 	testbench for 3 unit computing modules(use isim instead of eda playground, modules means we need to combine the unit with FIFO)
 

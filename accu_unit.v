@@ -11,7 +11,7 @@ module accu_unit #(
 	output wire 			   data_valid //to the FIFO block, indicate current data is good
 	);
   	reg signed [input_width-1:0] dout_mid;
-  	reg [4:0] counter;
+  	reg [5:0] counter;
 	always @(posedge clk) begin
 		//sync reset
 		if (rst) begin
@@ -21,7 +21,7 @@ module accu_unit #(
 
 		else if (~en) begin
 			dout_mid <= $signed(din) + $signed(dout_mid); 
-          	if (counter == 49) begin
+          	if (counter == 50) begin
 				counter <= 0;
 			end
 			counter <= counter + 1;
@@ -29,5 +29,5 @@ module accu_unit #(
 		//if en is high, just hold
 	end
   	assign dout = dout_mid;
-  assign data_valid = (counter === 49);
+  assign data_valid = (counter === 50);
 endmodule
