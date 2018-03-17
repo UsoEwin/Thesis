@@ -13,7 +13,9 @@ module ne_module #(
 	input en,rst,clk, //rst active high,en active low
   	output wire signed [output_width-1:0] dout, 
 	output wire 			   data_valid //to controller
+
 	);
+
 	//ne_comp_unit
 	wire signed [unit_width-1:0] unit_out;
 	wire data_valid_unit //useless
@@ -52,6 +54,8 @@ module ne_module #(
 		.din3(shift_reg_out3),.din4(shift_reg_out4),
 		.din5(shift_reg_out5),.dout(adder_out)
 		);
+
 	//final output
 	assign dout = adder_out;
+
 endmodule

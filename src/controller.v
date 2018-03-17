@@ -6,7 +6,7 @@
 `define PS_TH 1000
 `define NE_TH 1000
 
-module shift_reg #(
+module controller #(
 	parameter ll_width = 25,
 	parameter mul_width = 40 //for ps ad ne
 )(	
