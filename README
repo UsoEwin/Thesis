@@ -4,21 +4,46 @@ log file:
 
 last update time: March 17 //please modify this whenever you want to push a update
 
+//file structure:
 
-done:
+	src: contains all source codes for the datapath
+		
+	tb: all testbenches go here
 
-	unit computing module for line-length
-	unit computing module for power spectrum
-	unit computing module for non-linear energy
-	tb for synch fifo
-	tb for linelength computing unit
-	tb for ps unit
-	tb for ne unit //functionality test done
-    unit accu 
-    tb for unit accu //now instead of using FIFO, we will just use a shift reg
-    shift regs
-todo:
+//design structure:
 	
+	-some FPGA .v file mapping design to actual pins
+
+		-datapath
+
+			-ll_module(sub-datapath)
+			
+				-ll_comp_unit
+
+				-accu_unit
+
+				-shift_reg
+
+				-adder5
+
+			-ps_module
+				
+				-similar stuffs like ll
+
+			-ne_module
+
+				-~
+
+			-controller
+
+
+//done:
+
+	draft implementations
+
+//todo:
+
+	GUI
 
 	testbench for IIR filter
 
@@ -31,7 +56,11 @@ todo:
     interfacing -- at least light up some LEDs
     
 
-Chen: 	tb updated, can be used by all modules.
+Chen:
+	tb updated, can be used by all modules.
+
 	Remember to change DUT name to corresponding module when using it!
 
-Jingbo: splited 3 diff unit tb, IIR filter added.
+Jingbo:
+
+	splited 3 diff unit tb, IIR filter added.
