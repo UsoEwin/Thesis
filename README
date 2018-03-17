@@ -2,7 +2,8 @@ The HDL Coder repo for Hardware Subgroup
 
 log file:
 
-last update time: March 14 //please modify this whenever you want to push a update
+last update time: March 17 //please modify this whenever you want to push a update
+
 
 done:
 
@@ -18,6 +19,7 @@ done:
     shift regs
 todo:
 	
+
 	testbench for IIR filter
 
     tb for shift regs

@@ -4,8 +4,8 @@
 //here i is time stamp
 //
 module ps_comp_unit #(
-	parameter input_width = 32,
-	parameter output_width = 64
+	parameter input_width = 16,
+	parameter output_width = 32
 )(	
 	input signed [input_width-1:0] din,
 	input en,rst,clk, //rst active high,en active low
