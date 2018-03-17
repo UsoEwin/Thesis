@@ -53,7 +53,7 @@ last update time: March 17 //please modify this whenever you want to push a upda
 
 	testbench overall system(read in the test dataflow and gain a output on software)
 
-    interfacing -- at least light up some LEDs
+	interfacing -- at least light up some LEDs
     
 
 Chen:
