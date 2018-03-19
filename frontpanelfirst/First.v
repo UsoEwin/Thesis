@@ -45,7 +45,7 @@ assign i2c_scl = 1'bz;
 assign hi_muxsel = 1'b0;
 
 //assign led = ~ep00wire[7:0];
-assign led      = ep00wire[7:0];
+assign led      = ~ep00wire[7:0];
 assign ep20wire = {16'h0000};
 always @(posedge ti_clk)  ep21wire <= ep01wire + ep02wire;
 
