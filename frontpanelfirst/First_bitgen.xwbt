@@ -1,0 +1,8 @@
+INTSTYLE=ise
+INFILE=C:\Users\DD\Documents\Xilinx Projects\frontpanelfirst\First.ncd
+OUTFILE=C:\Users\DD\Documents\Xilinx Projects\frontpanelfirst\First.bit
+FAMILY=Spartan6
+PART=xc6slx150-2fgg484
+WORKINGDIR=C:\Users\DD\Documents\Xilinx Projects\frontpanelfirst
+LICENSE=ISE
+USER_INFO=174169348_174110696_210640455_066
