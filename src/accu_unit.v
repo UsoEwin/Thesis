@@ -23,6 +23,7 @@ module accu_unit #(
 			dout_mid <= $signed(din) + $signed(dout_mid); 
           	if (counter == 50) begin
 				counter <= 0;
+				dout_mid <= dout_mid;
 			end
 			counter <= counter + 1;
 		end
