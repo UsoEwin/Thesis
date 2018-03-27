@@ -2,7 +2,9 @@ The HDL Coder repo for Hardware Subgroup
 
 log file:
 
-last update time: March 17 //please modify this whenever you want to push a update
+last update time: March 19 //please modify this whenever you want to push a update
+
+the python version should be 2.x. //don't use 3.x!!!!!!!!!!!
 
 //file structure:
 
