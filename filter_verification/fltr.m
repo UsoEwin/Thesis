@@ -10,7 +10,8 @@ yout = filter(Hd,y);
 plot(t,yout);
 save('sin_fs250.mat','y')
 save('sin_yout.mat','yout')
-
+save('sin_fs250.txt','y','-ascii');
+save('sin_yout.txt','yout','-ascii');
 
 %fc = 70;
 %fs = 250;
