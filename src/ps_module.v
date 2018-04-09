@@ -20,7 +20,7 @@ module ps_module #(
 
 	//ps_comp_unit
 	wire signed [unit_width-1:0] unit_out;
-	wire data_valid_unit //useless
+	wire data_valid_unit; //useless
 	ps_comp_unit #(input_width,unit_width) myps(
 		.din(din),.en(en),.rst(rst),.clk(clk),.dout(unit_out),.data_valid(data_valid_unit)
 		);
@@ -28,7 +28,7 @@ module ps_module #(
 	//accu_unit
 	wire signed [mid_width-1:0] accu_out;
 	wire data_valid_accu;
-	accu_unit #(mid_width) myaccu(
+	accu_unit#(mid_width) myaccu(
 		.din(unit_out),.en(en),.rst(rst),.clk(clk),.dout(accu_out),.data_valid(data_valid_accu)
 		);
 
@@ -39,7 +39,7 @@ module ps_module #(
 	wire signed [mid_width-1:0] shift_reg_out4;
 	wire signed [mid_width-1:0] shift_reg_out5;
 	wire data_valid_shifter;
-	shift_reg #(mid_width,5) myshifter(
+	shift_reg#(mid_width,5) myshifter(
 		//inputs
 		.din(accu_out),.en(en),.clk(clk),.rst(rst),.data_ready(data_valid_accu),
 		//outputs
@@ -51,7 +51,7 @@ module ps_module #(
 	
 	//adder5
 	wire signed [output_width-1:0] adder_out;
-	adder5 #(mid_width,output_width) myadder(
+	adder5#(mid_width,output_width) myadder(
 		.din1(shift_reg_out1),.din2(shift_reg_out2),
 		.din3(shift_reg_out3),.din4(shift_reg_out4),
 		.din5(shift_reg_out5),.dout(adder_out)

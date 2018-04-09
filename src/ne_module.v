@@ -3,11 +3,12 @@
 //
 // under testing
 module ne_module #(
-	parameter input_width = 16, 
+	parameter input_width = 16,
 	parameter unit_width = 32,
 	parameter mid_width = 37,//computed by 32+log(50) change this for ps and ne
-	parameter output_width = 40 //computed by 37+log(5)
-)(	
+	parameter output_width = 40//computed by 37+log(5)
+)
+(	
 	//input will be the same as ll unit
 	input signed [input_width-1:0]	din,
 	input en,rst,clk, //rst active high,en active low
@@ -18,7 +19,7 @@ module ne_module #(
 
 	//ne_comp_unit
 	wire signed [unit_width-1:0] unit_out;
-	wire data_valid_unit //useless
+	wire data_valid_unit; //useless
 	ne_comp_unit #(input_width,unit_width) myne(
 		.din(din),.en(en),.rst(rst),.clk(clk),.dout(unit_out),.data_valid(data_valid_unit)
 		);

@@ -2,7 +2,7 @@
 // giant adder to sum up 5 inputs, we don't care the delay
 // you can choose tree adder or whatever
 // under testing
-module adder #(
+module adder5 #(
 	parameter input_width = 37, //for 32 bits input, change this for ne and ll
 	parameter output_width = 40 //for 32 bits input
 )(	

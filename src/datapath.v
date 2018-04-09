@@ -66,7 +66,7 @@ module datapath #(
 	.din_ll(ll_out),.din_ne(ne_out),.din_ps(ps_out),
 	
 	//din ready
-	.data_ready_ll(data_valid_ll),.data_ready_ne(data_valid_ne),.data_ready_ps(data_valid_ps)
+	.data_ready_ll(data_valid_ll),.data_ready_ne(data_valid_ne),.data_ready_ps(data_valid_ps),
 
 	//output
 	.stimulation(stimulation)
