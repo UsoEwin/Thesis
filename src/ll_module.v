@@ -27,7 +27,7 @@ module ll_module #(
 	//accu_unit
 	wire signed [mid_width-1:0] accu_out;
 	wire data_valid_accu;
-	accu_unit #(mid_width) myaccu(
+	accu_unit #(input_width+1,mid_width) myaccu(
 		.din(unit_out),.en(en),.rst(rst),.clk(clk),.dout(accu_out),.data_valid(data_valid_accu)
 		);
 

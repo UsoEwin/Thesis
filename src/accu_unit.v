@@ -3,14 +3,15 @@
 //
 // unit test done
 module accu_unit #(
-	parameter input_width = 37 //computed by 32+log(50) change this for ps and ne
+	parameter input_width = 32, //computed by 32+log(50) change this for ps and ne
+	parameter output_width = 37
 )(	
 	input signed [input_width-1:0]	din,
 	input en,rst,clk, //rst active high,en active low
-  	output wire signed [input_width:0] dout, 
+  	output wire signed [output_width-1:0] dout, 
 	output wire 			   data_valid //to the FIFO block, indicate current data is good
 	);
-  	reg signed [input_width-1:0] dout_mid;
+  	reg signed [output_width-1:0] dout_mid;
   	reg [5:0] counter;
 	always @(posedge clk) begin
 		//sync reset

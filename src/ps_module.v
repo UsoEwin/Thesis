@@ -28,7 +28,7 @@ module ps_module #(
 	//accu_unit
 	wire signed [mid_width-1:0] accu_out;
 	wire data_valid_accu;
-	accu_unit#(mid_width) myaccu(
+	accu_unit #(unit_width,mid_width) myaccu(
 		.din(unit_out),.en(en),.rst(rst),.clk(clk),.dout(accu_out),.data_valid(data_valid_accu)
 		);
 
@@ -39,7 +39,7 @@ module ps_module #(
 	wire signed [mid_width-1:0] shift_reg_out4;
 	wire signed [mid_width-1:0] shift_reg_out5;
 	wire data_valid_shifter;
-	shift_reg#(mid_width,5) myshifter(
+	shift_reg #(mid_width,5) myshifter(
 		//inputs
 		.din(accu_out),.en(en),.clk(clk),.rst(rst),.data_ready(data_valid_accu),
 		//outputs

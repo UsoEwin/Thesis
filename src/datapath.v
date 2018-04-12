@@ -60,7 +60,7 @@ module datapath #(
 
 //controller
 
-	controller #(ll_output_width,output_width) (
+	controller #(ll_output_width,output_width) myctrl(
 
 	//outcome sigals
 	.din_ll(ll_out),.din_ne(ne_out),.din_ps(ps_out),
