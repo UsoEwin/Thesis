@@ -39,12 +39,14 @@ module tb_ll_module;
 
     initial begin
       $dumpvars;
-    
+    	
+    	/*
       	data_file = $fopen("testint_data.txt", "r");
      	write_file = $fopen("fout.txt", "w");
       	if (data_file != 1'b0)
         	$display("data_file handle is successful");
     	if (write_file != 1'b0)
+    	*/
         din = 0; rst = 1; en = 0;
         #100;
         rst = 1; 
@@ -52,12 +54,12 @@ module tb_ll_module;
         rst = 0; 
       repeat(5000) begin
       	@(posedge clk);
-        scan_file = $fscanf(data_file, "%d\n", fin);
-        $fwrite(write_file, "%d\n", dout);
-        din = fin; 
+      //  scan_file = $fscanf(data_file, "%d\n", fin);
+      //  $fwrite(write_file, "%d\n", dout);
+      //  din = fin; 
         //#100;
         
-        //din <= $random % 100;
+        din <= $random % 100;
       end
       $finish();
     end
