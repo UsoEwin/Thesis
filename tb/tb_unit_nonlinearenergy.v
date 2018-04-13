@@ -11,7 +11,7 @@
 //clk cycle
 `define CLK_PERIOD 30
 `define DATA_WIDTH 32
-module tb_unit_powerspectrum;
+module tb_unit_nonlinearenergy;
 	
   	reg signed [`DATA_WIDTH-1:0] test_din;
 	reg test_clk = 1'b0;

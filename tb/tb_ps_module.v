@@ -6,10 +6,11 @@
 // using the actual ieeg signal as input, you can find the input at testint_data.txt and bits for seizure in testint_tag.txt
 `define CLK_PERIOD 30
 `define DATA_WIDTH 16
-`define MID_WIDTH 22
-`define OUTPUT_WIDTH 25
+`define UNIT_WIDTH 32
+`define MID_WIDTH 37
+`define OUTPUT_WIDTH 40
 
-module tb_ll_module;
+module tb_ps_module;
     // Inputs
     reg clk, en,rst;
     wire data_valid;
@@ -24,7 +25,7 @@ module tb_ll_module;
     // Outputs
     
     // Instantiate the Unit Under Test (UUT)
-    ll_module #(`DATA_WIDTH,`MID_WIDTH,`OUTPUT_WIDTH) uut (
+    ps_module #(`DATA_WIDTH,`UNIT_WIDTH,`MID_WIDTH,`OUTPUT_WIDTH) uut (
         .clk(clk), 
         .rst(rst),
         .en(en),
@@ -40,26 +41,26 @@ module tb_ll_module;
     initial begin
       $dumpvars;
     	
-    	
-      	data_file = $fopen("testin", "r");
+    	/*
+      	data_file = $fopen("testint_data.txt", "r");
      	write_file = $fopen("fout.txt", "w");
       	if (data_file != 1'b0)
         	$display("data_file handle is successful");
     	if (write_file != 1'b0)
-    	
+    	*/
         din = 0; rst = 1; en = 0;
         #100;
         rst = 1; 
         #200;
         rst = 0; 
-      repeat(50000) begin
+      repeat(5000) begin
       	@(posedge clk);
-        scan_file = $fscanf(data_file, "%d\n", fin);
-        $fwrite(write_file, "%d\n", dout);
-        din = fin; 
+      //  scan_file = $fscanf(data_file, "%d\n", fin);
+      //  $fwrite(write_file, "%d\n", dout);
+      //  din = fin; 
         //#100;
         
-        //din <= $random % 100;
+        din <= $random % 100;
       end
       $finish();
     end
