@@ -12,6 +12,8 @@ the python version should be 2.x. //don't use 3.x!!!!!!!!!!!
 		
 	tb: all testbenches go here
 
+	the maximum of test data: 1067
+	the minimum of test data: -689
 //design structure:
 	
 	-some FPGA .v file mapping design to actual pins
