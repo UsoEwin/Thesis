@@ -46,7 +46,7 @@ module ll_module #(
 		.dout_stage3(shift_reg_out3),.dout_stage4(shift_reg_out4),
 		.dout_stage5(shift_reg_out5),.data_valid(data_valid_shifter)
 		);
-	assign data_valid = data_valid_shifter;// shifter will indicate if output is ok
+	assign data_valid = (data_valid_shifter == 1) && (dout !== 25'bx);// shifter will indicate if output is ok
 	
 	//adder5
 	wire signed [output_width-1:0] adder_out;

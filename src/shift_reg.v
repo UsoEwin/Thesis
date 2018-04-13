@@ -31,7 +31,11 @@ module shift_reg #(
 
 		else if (~en && data_ready) begin
 			shifter[0] <= din;
-			counter <= counter + 1;
+			if(counter < 5)
+				counter <= counter + 1;
+			else begin
+				counter <= counter;
+			end
 			for(i = 1; i < reg_depth; i=i+1)
 				shifter[i] <= shifter[i-1];
 		end
