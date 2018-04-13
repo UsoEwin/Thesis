@@ -41,6 +41,8 @@ module tb_unit_linelength;
         $monitor($time,,"din is %d. dout is %d",test_din, test_dout);
 		test_din <= 0;
 		test_rst <= 1'b1;
+		test_en <= 1;
+		@(posedge test_clk);
 		test_en <= 0;
         @(posedge test_clk);
       	test_rst <= 1'b0;

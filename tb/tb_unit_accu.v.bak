@@ -1,6 +1,5 @@
 `timescale 1ns/100ps
-//verification done
-//all test case passed
+
 //this is for unit test of accu_unit
 
 //second and ms
@@ -48,7 +47,7 @@ module tb_unit_accu;
       
       	test_rst <= 1'b0;
 
-      repeat(200) begin 
+      repeat(100) begin 
         @(posedge test_clk);
 		test_din <= $random % 100;
 		clk_counter <= clk_counter + 1;

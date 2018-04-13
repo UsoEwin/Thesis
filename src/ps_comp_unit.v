@@ -2,7 +2,9 @@
 //in this project, we are assumimg all inputs are integers
 //this module will perform dout = din[i]^2
 //here i is time stamp
-//
+
+//all test case passed
+
 module ps_comp_unit #(
 	parameter input_width = 16,
 	parameter output_width = 32
@@ -32,5 +34,5 @@ module ps_comp_unit #(
 	end
 
 	assign dout = dout_buffer; //already take care of the invalid output
-	assign data_valid = (en === 1'b0) ;
+	assign data_valid = (en == 1'b0) ;
 endmodule

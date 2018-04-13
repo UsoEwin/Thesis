@@ -10,7 +10,8 @@
 
 //clk cycle
 `define CLK_PERIOD 30
-`define DATA_WIDTH 32
+`define DATA_WIDTH 16
+`define OUTPUT_WIDTH 32
 module tb_unit_powerspectrum;
 	
   	reg signed [`DATA_WIDTH-1:0] test_din;
@@ -23,7 +24,8 @@ module tb_unit_powerspectrum;
 	always #(`CLK_PERIOD/2) test_clk = ~test_clk;
 //instantiate the DUT
 	ps_comp_unit #(
-		.input_width(`DATA_WIDTH)
+		.input_width(`DATA_WIDTH),
+		.output_width(`OUTPUT_WIDTH)
 	) DUT (
 		.clk(test_clk),
 		.rst(test_rst),

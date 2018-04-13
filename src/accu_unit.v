@@ -1,7 +1,7 @@
 //
 // accumulator module for our computing 
 //
-// unit test done
+// all test passed
 module accu_unit #(
 	parameter input_width = 32, //computed by 32+log(50) change this for ps and ne
 	parameter output_width = 37
@@ -24,12 +24,13 @@ module accu_unit #(
 			dout_mid <= $signed(din) + $signed(dout_mid); 
           	if (counter == 50) begin
 				counter <= 0;
-				dout_mid <= dout_mid;
+				dout_mid <= 0;
 			end
-			counter <= counter + 1;
+			else
+				counter <= counter + 1;
 		end
 		//if en is high, just hold
 	end
   	assign dout = dout_mid;
-  assign data_valid = (counter === 50);
+  assign data_valid = (counter == 50);
 endmodule
