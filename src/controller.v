@@ -2,10 +2,16 @@
 // the naive controller unit, simply using majority gate implementation here
 // under testing
 // need to add the output valid logic
-`define LL_TH 1000
-`define PS_TH 1000
-`define NE_TH 1000
 
+`define LL_TH 3000
+`define PS_TH 3200000
+`define NE_TH 250000
+
+/*
+`define LL_TH 500
+`define PS_TH 500
+`define NE_TH 500
+*/
 module controller #(
 	parameter ll_width = 25,
 	parameter mul_width = 40 //for ps ad ne
@@ -16,9 +22,10 @@ module controller #(
 	input data_ready_ll,
 	input data_ready_ps,
 	input data_ready_ne,
-	output stimulation
+	output stimulation,
+	output reg [1:0] count
 	);
-	reg count;
+	//reg [1:0] count;
 	always @(*) begin
 
 		if (data_ready_ne && data_ready_ll && data_ready_ps) begin
