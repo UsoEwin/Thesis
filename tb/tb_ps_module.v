@@ -43,7 +43,7 @@ module tb_ps_module;
     	
     	
       	data_file = $fopen("testin", "r");
-     	write_file = $fopen("fout.txt", "w");
+     	write_file = $fopen("psout.txt", "w");
       	if (data_file != 1'b0)
         	$display("data_file handle is successful");
     	if (write_file != 1'b0)

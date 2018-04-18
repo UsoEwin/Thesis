@@ -22,6 +22,8 @@ module tb_datapath;
     
     reg signed [`DATA_WIDTH-1:0] fin;
 
+    reg [15:0] cycle_count;
+
     integer data_file;
     integer scan_file;
   	integer write_file;
@@ -51,7 +53,7 @@ module tb_datapath;
           $display("data_file handle is successful");
     	 if (write_file != 1'b0)
           $display("write_file handle is successful");
-        din = 0; rst = 1; en = 0;
+        din = 0; rst = 1; en = 0; cycle_count<=0;
         #100;
         rst = 1; 
         #200;
@@ -61,6 +63,7 @@ module tb_datapath;
         scan_file = $fscanf(data_file, "%d\n", fin);
         $fwrite(write_file, "%d\n", stimulation);
         din <= fin; 
+        cycle_count <= cycle_count + 1; 
         //#100;
         
         //din <= $random % 100;
