@@ -1,4 +1,4 @@
-module shift_reg #(
+module shift_reg_6 #(
 	parameter input_width = 37, //for 32 bits input, change this for ne and ll
 	parameter reg_depth = 6
 )(	
