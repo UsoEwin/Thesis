@@ -53,7 +53,7 @@ module tb_ps_module;
         rst = 1; 
         #200;
         rst = 0; 
-      repeat(5000) begin
+      repeat(50000) begin
       	@(posedge clk);
         scan_file = $fscanf(data_file, "%d\n", fin);
         $fwrite(write_file, "%d\n", dout);

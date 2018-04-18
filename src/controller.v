@@ -4,7 +4,7 @@
 // need to add the output valid logic
 
 `define LL_TH 3000
-`define PS_TH 3200000
+`define PS_TH 10000000
 `define NE_TH 250000
 
 /*
