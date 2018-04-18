@@ -117,15 +117,9 @@ module baseline #(
 		.data_valid(data_valid_shifter2)
 		);
 
-	wire signed [output_width-1:0] shift_reg2_out;
-	assign shift_reg2_dout = $signed(shift_reg2_out4)+$signed(shift_reg2_out3)+$signed(shift_reg2_out2)+$signed(shift_reg2_out1);
-
 	wire signed [output_width-1:0] baseline_out;
-	// Output baseline is the first 2 min of this 4 min chunk of nono verlapping 30sec
-	if count3 == 4'd8 begin
-		assign baseline_out = shift_reg2_dout;
-		assign count3 = 4'b0;
-	end
+	// Output baseline is the first 2 min of this 4 min chunk of non overlapping 30sec
+	assign baseline_out = $signed(shift_reg2_out4)+$signed(shift_reg2_out3)+$signed(shift_reg2_out2)+$signed(shift_reg2_out1);
 
 	assign data_valid = (data_valid_shifter2 == 1) && (dout !== 34'bx);
 
