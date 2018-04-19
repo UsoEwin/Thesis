@@ -1,4 +1,4 @@
-//`timescale 1ns / 1ps
+`timescale 1ns / 1ps
 
 // Butterworth IIR 6th order 4-70Hz bandpass filter
 // if you want to modify this refer to:
