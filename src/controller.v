@@ -1,7 +1,5 @@
 //
 // the naive controller unit, simply using majority gate implementation here
-// under testing
-// need to add the output valid logic
 
 `define LL_TH 3000
 `define PS_TH 10000000

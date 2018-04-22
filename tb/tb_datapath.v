@@ -66,9 +66,8 @@ module tb_datapath;
         cycle_count <= cycle_count + 1; 
         //#100;
         
-        //din <= $random % 100;
       end
-file:///home/illumia/Desktop/firsthigh.bmp      $finish();
+    $finish();
     end
   
   initial begin

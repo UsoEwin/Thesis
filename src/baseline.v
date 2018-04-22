@@ -1,132 +1,163 @@
-
-
-
+// this is the baseline program 
+// modify port size for different modules, default one is linelength
+// under testing
 module baseline #(
-	parameter input_width = 25,
-	parameter mid_width1 = 28,//computed by 25+log(5) 
-	parameter mid_width2 = 31,//computed by 28+log(5)
-	parameter output_width = 34,//computed by 31+log(6)
-)
-	(	
-	input signed [input_width-1:0]	din,
-	input en,rst,clk, //rst active high,en active low
-  	output wire signed [output_width-1:0] dout, 
-	output wire 			   data_valid //to controller
 
+	parameter input_width = 25,
+	parameter mid_width1 = 28, 
+	parameter mid_width2 = 31,
+	parameter output_width = 34 //all computed by input + log(num of inputs) 
+
+)(
+	//inputs
+	input signed [input_width-1:0] din,
+	input en,clk,rst, // en active low
+
+	//outputs
+	output wire [input_width-1:0] dout
+	//output wire data_valid
+	
+);
+// stage 1, compute sliding window for 1s
+reg [7:0] counter_1s;
+wire data_valid_1s;
+always @(posedge clk) begin
+	if (rst || counter_1s >= 250) begin
+		counter_1s <= 0;
+	end	
+	else begin
+		counter_1s <= counter_1s + 1;
+	end
+	
+end
+
+wire signed [input_width-1:0] dout_stage1_1s;
+wire signed [input_width-1:0] dout_stage2_1s;
+wire signed [input_width-1:0] dout_stage3_1s;
+wire signed [input_width-1:0] dout_stage4_1s;
+wire signed [input_width-1:0] dout_stage5_1s;
+
+shift_reg #(input_width,5) shift_reg_stage1(
+
+	//input part
+	.din(din),.en(en),.rst(rst),.data_ready(1'b1), //always taking new values
+	
+	//output part
+	.dout_stage1(dout_stage1_1s),.dout_stage2(dout_stage2_1s),
+	.dout_stage3(dout_stage3_1s),.dout_stage4(dout_stage4_1s),
+	.dout_stage5(dout_stage5_1s),.data_valid(data_valid_1s)
 	);
 
-	// Calculate baseline 
-	reg [2:0] count0;
-	reg [2:0] count1;
-	reg [2:0] count2;
-	reg [3:0] count3;
+// stage 2, compute sliding window for 5s
+wire data_ready_5s;
+wire [mid_width1-1:0] dout_1s;
+reg [2:0] counter_5s;
+wire data_valid_5s;
+assign dout_1s = $signed(dout_stage1_1s)+$signed(dout_stage2_1s)+$signed(dout_stage3_1s)+$signed(dout_stage4_1s)+$signed(dout_stage5_1s);
 
-	always @(posedge clk) begin
-		if (rst) begin
-			count0 <= 3'b0;
-			count1 <= 3'b0;
-			count2 <= 3'b0;
-			count3 <= 4'b0;
-		end
-		count0 <= count0 + 1;
-		count1 <= count1 + 1;
-		count2 <= count2 + 1;
-		count3 <= count3 + 1; 
+always @(posedge clk) begin
+	if (rst && counter_5s >= 5) begin
+		counter_5s <= 0;
 	end
-
-	wire signed [input_width-1:0] onesecin;
-	wire data_valid0;
-	// Get value of 1 sec non overlapping
-	if count0 == 3'd5 begin
-		assign onesecin = din; 
-		assign data_valid0 = 1;
-		assign count0 = 3'b0;
+	else if(counter_1s >= 250) begin
+		counter_5s <= counter_5s + 1;
 	end
+end
 
-	wire signed [input_width-1:0] shift_reg0_out1;
-	wire signed [input_width-1:0] shift_reg0_out2;
-	wire signed [input_width-1:0] shift_reg0_out3;
-	wire signed [input_width-1:0] shift_reg0_out4;
-	wire signed [input_width-1:0] shift_reg0_out5;
-	wire data_valid_shifter0;
-	shift_reg #(input_width,5) myshifter0(
-		//inputs
-		.din(onesecin),.en(en),.clk(clk),.rst(rst),.data_ready(data_valid0),
-		//outputs
-		.dout_stage1(shift_reg0_out1),.dout_stage2(shift_reg0_out2),
-		.dout_stage3(shift_reg0_out3),.dout_stage4(shift_reg0_out4),
-		.dout_stage5(shift_reg0_out5),.data_valid(data_valid_shifter0)
-		);
+assign data_ready_5s = (data_valid_1s && counter_5s >= 5); 
+wire signed [mid_width1-1:0] dout_stage1_5s;
+wire signed [mid_width1-1:0] dout_stage2_5s;
+wire signed [mid_width1-1:0] dout_stage3_5s;
+wire signed [mid_width1-1:0] dout_stage4_5s;
+wire signed [mid_width1-1:0] dout_stage5_5s;
 
-	wire signed [mid_width1-1:0] shift_reg0_out;
-	assign shift_reg0_dout = $signed(shift_reg0_out5)+$signed(shift_reg0_out4)+$signed(shift_reg0_out3)+$signed(shift_reg0_out2)+$signed(shift_reg0_out1);
+shift_reg #(mid_width1,5) shift_reg_stage2(
 
-	wire signed [mid_width1-1:0] fivesecin;
-	wire data_valid1;
-	// shift_reg for store 5 sec NON OVERLAPPING
-	if count1 == 3'd5 begin
-		assign fivesecin = shift_reg0_dout;
-		assign datavalid1 = 1;
-		assign count1 = 3'b0;
+	//input part
+	.din(dout_1s),.en(en),.rst(rst),.data_ready(data_ready_5s), //always taking new values
+	
+	//output part
+	.dout_stage1(dout_stage1_5s),.dout_stage2(dout_stage2_5s),
+	.dout_stage3(dout_stage3_5s),.dout_stage4(dout_stage4_5s),
+	.dout_stage5(dout_stage5_5s),.data_valid(data_valid_5s)
+	);
+
+//stage 3, computing sliding window for 30s
+wire data_ready_30s;
+wire [mid_width2-1:0] dout_5s;
+reg [2:0] counter_30s;
+wire data_valid_30s;
+assign dout_5s = $signed(dout_stage1_5s)+$signed(dout_stage2_5s)+$signed(dout_stage3_5s)+$signed(dout_stage4_5s)+$signed(dout_stage5_5s);
+
+always @(posedge clk) begin
+	if (rst && counter_30s >= 6) begin
+		counter_30s <= 0;
 	end
-
-	wire signed [mid_width1-1:0] shift_reg1_out1;
-	wire signed [mid_width1-1:0] shift_reg1_out2;
-	wire signed [mid_width1-1:0] shift_reg1_out3;
-	wire signed [mid_width1-1:0] shift_reg1_out4;
-	wire signed [mid_width1-1:0] shift_reg1_out5;
-	wire signed [mid_width1-1:0] shift_reg1_out6;
-	wire data_valid_shifter1;
-	shift_reg_6 #(mid_width1,6) myshifter1(
-		//inputs
-		.din(fivesecin),.en(en),.clk(clk),.rst(rst),.data_ready(data_valid1),
-		//outputs
-		.dout_stage1(shift_reg1_out1),.dout_stage2(shift_reg1_out2),
-		.dout_stage3(shift_reg1_out3),.dout_stage4(shift_reg1_out4),
-		.dout_stage5(shift_reg1_out5),.dout_stage5(shift_reg1_out6),
-		.data_valid(data_valid_shifter1)
-		);
-
-	wire signed [mid_width2-1:0] shift_reg1_out;
-	assign shift_reg1_dout = $signed(shift_reg1_out6)+$signed(shift_reg1_out5)+$signed(shift_reg1_out4)+$signed(shift_reg1_out3)+$signed(shift_reg1_out2)+$signed(shift_reg1_out1);
-
-	wire signed [mid_width2-1:0] thirtysecin;
-	wire data_valid2;
-	// shift_reg for store 30 sec NON OVERLAPPING segments
-	if count2 == 3'd6 begin
-		assign thirtysecin = shift_reg1_dout;
-		assign datavalid2 = 1;
-		assign count2 = 3'b0;
+	else if(counter_5s >= 5) begin
+		counter_30s <= counter_30s + 1;
 	end
+end
 
-	wire signed [mid_width2-1:0] shift_reg2_out1;
-	wire signed [mid_width2-1:0] shift_reg2_out2;
-	wire signed [mid_width2-1:0] shift_reg2_out3;
-	wire signed [mid_width2-1:0] shift_reg2_out4;
-	wire signed [mid_width2-1:0] shift_reg2_out5;
-	wire signed [mid_width2-1:0] shift_reg2_out6;
-	wire signed [mid_width2-1:0] shift_reg2_out7;
-	wire signed [mid_width2-1:0] shift_reg2_out8;
-	wire data_valid_shifter2;
-	shift_reg_8 #(mid_width2,8) myshifter2(
-		//inputs
-		.din(thirtysecin),.en(en),.clk(clk),.rst(rst),.data_ready(data_valid1),
-		//outputs
-		.dout_stage1(shift_reg2_out1),.dout_stage2(shift_reg2_out2),
-		.dout_stage3(shift_reg2_out3),.dout_stage4(shift_reg2_out4),
-		.dout_stage5(shift_reg2_out5),.dout_stage5(shift_reg2_out6),
-		.dout_stage7(shift_reg2_out7),.dout_stage6(shift_reg2_out8),
-		.data_valid(data_valid_shifter2)
-		);
+assign data_ready_30s = (data_valid_5s && counter_30s >= 6); 
 
-	wire signed [output_width-1:0] baseline_out;
-	// Output baseline is the first 2 min of this 4 min chunk of non overlapping 30sec
-	assign baseline_out = $signed(shift_reg2_out4)+$signed(shift_reg2_out3)+$signed(shift_reg2_out2)+$signed(shift_reg2_out1);
+wire signed [mid_width2-1:0] dout_stage1_30s;
+wire signed [mid_width2-1:0] dout_stage2_30s;
+wire signed [mid_width2-1:0] dout_stage3_30s;
+wire signed [mid_width2-1:0] dout_stage4_30s;
+wire signed [mid_width2-1:0] dout_stage5_30s;
 
-	assign data_valid = (data_valid_shifter2 == 1) && (dout !== 34'bx);
+shift_reg_6 #(mid_width2,6) shift_reg_stage3(
 
-	// final output
-	// shift baseline by 8 to compare to feature value <
-	assign dout = baseline_out>>>8;
+	//input part
+	.din(dout_5s),.en(en),.rst(rst),.data_ready(data_ready_30s), //always taking new values
+	
+	//output part
+	.dout_stage1(dout_stage1_30s),.dout_stage2(dout_stage2_30s),
+	.dout_stage3(dout_stage3_30s),.dout_stage4(dout_stage4_30s),
+	.dout_stage5(dout_stage5_30s),.data_valid(data_valid_30s)
+	);
+
+//stage 4,computing sliding window for 240s
+
+wire data_ready_240s;
+wire [mid_width2-1:0] dout_30s;
+reg [2:0] counter_240s;
+wire data_valid_240s;
+
+assign dout_30s = $signed(dout_stage1_30s)+$signed(dout_stage2_30s)+$signed(dout_stage3_30s)+$signed(dout_stage4_30s)+$signed(dout_stage5_30s);
+
+always @(posedge clk) begin
+	if (rst && counter_240s >=8) begin
+		counter_240s <= 0;
+	end
+	else if(counter_30s >= 6) begin
+		counter_240s <= counter_240s + 1;
+	end
+end
+
+assign data_ready_240s = (data_valid_30s && counter_240s >= 8);
+
+wire signed [mid_width2-1:0] dout_stage1_240s;
+wire signed [mid_width2-1:0] dout_stage2_240s;
+wire signed [mid_width2-1:0] dout_stage3_240s;
+wire signed [mid_width2-1:0] dout_stage4_240s;
+wire signed [mid_width2-1:0] dout_stage5_240s;
+
+shift_reg_8 #(mid_width2,8) shift_reg_stage4(
+
+	//input part
+	.din(dout_30s),.en(en),.rst(rst),.data_ready(data_ready_240s), //always taking new values
+	
+	//output part
+	.dout_stage1(dout_stage1_240s),.dout_stage2(dout_stage2_240s),
+	.dout_stage3(dout_stage3_240s),.dout_stage4(dout_stage4_240s),
+	.dout_stage5(dout_stage5_240s),.data_valid(data_valid_240s)
+	);
+
+//output stage
+wire signed [output_width-1:0] dout_240s;
+assign dout_240s = $signed(dout_stage1_240s)+$signed(dout_stage2_240s)+$signed(dout_stage3_240s)+$signed(dout_stage4_240s)+$signed(dout_stage5_240s); 
+
+assign dout = (dout_240s >>> 8); 
 
 endmodule
