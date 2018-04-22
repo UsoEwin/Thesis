@@ -1,4 +1,6 @@
 
+
+
 module baseline #(
 	parameter input_width = 25,
 	parameter mid_width1 = 28,//computed by 25+log(5) 
@@ -21,10 +23,10 @@ module baseline #(
 
 	always @(posedge clk) begin
 		if (rst) begin
-			count0 = 3'b0;
-			count1 = 3'b0;
-			count2 = 3'b0;
-			count3 = 4'b0;
+			count0 <= 3'b0;
+			count1 <= 3'b0;
+			count2 <= 3'b0;
+			count3 <= 4'b0;
 		end
 		count0 <= count0 + 1;
 		count1 <= count1 + 1;
@@ -106,7 +108,7 @@ module baseline #(
 	wire signed [mid_width2-1:0] shift_reg2_out7;
 	wire signed [mid_width2-1:0] shift_reg2_out8;
 	wire data_valid_shifter2;
-	shift_reg_8 #(mid_width2,6) myshifter2(
+	shift_reg_8 #(mid_width2,8) myshifter2(
 		//inputs
 		.din(thirtysecin),.en(en),.clk(clk),.rst(rst),.data_ready(data_valid1),
 		//outputs
@@ -124,7 +126,7 @@ module baseline #(
 	assign data_valid = (data_valid_shifter2 == 1) && (dout !== 34'bx);
 
 	// final output
-	// shift baseline by 8 to compare to feature value 
+	// shift baseline by 8 to compare to feature value <
 	assign dout = baseline_out>>>8;
 
 endmodule
