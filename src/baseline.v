@@ -156,8 +156,8 @@ shift_reg_8 #(mid_width2,8) shift_reg_stage4(
 	//output part
 	.dout_stage1(dout_stage1_240s),.dout_stage2(dout_stage2_240s),
 	.dout_stage3(dout_stage3_240s),.dout_stage4(dout_stage4_240s),
-	.dout_stage5(dout_stage5_240s),.dout_stage5(dout_stage6_240s),
-	.dout_stage5(dout_stage7_240s),.dout_stage5(dout_stage8_240s),
+	.dout_stage5(dout_stage5_240s),.dout_stage6(dout_stage6_240s),
+	.dout_stage7(dout_stage7_240s),.dout_stage8(dout_stage8_240s),
 	.data_valid(data_valid_240s)
 	);
 
