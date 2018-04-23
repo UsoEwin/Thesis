@@ -22,7 +22,7 @@ module baseline #(
 reg [7:0] counter_1s;
 wire data_valid_1s;
 always @(posedge clk) begin
-	if (rst || counter_1s >= 250) begin
+	if (rst || counter_1s >= 250) begin 
 		counter_1s <= 0;
 	end	
 	else begin
@@ -105,6 +105,7 @@ wire signed [mid_width2-1:0] dout_stage2_30s;
 wire signed [mid_width2-1:0] dout_stage3_30s;
 wire signed [mid_width2-1:0] dout_stage4_30s;
 wire signed [mid_width2-1:0] dout_stage5_30s;
+	wire signed [mid_width2-1:0] dout_stage6_30s;
 
 shift_reg_6 #(mid_width2,6) shift_reg_stage3(
 
@@ -114,7 +115,8 @@ shift_reg_6 #(mid_width2,6) shift_reg_stage3(
 	//output part
 	.dout_stage1(dout_stage1_30s),.dout_stage2(dout_stage2_30s),
 	.dout_stage3(dout_stage3_30s),.dout_stage4(dout_stage4_30s),
-	.dout_stage5(dout_stage5_30s),.data_valid(data_valid_30s)
+	.dout_stage5(dout_stage5_30s),.dout_stage6(dout_stage6_30s),
+	.data_valid(data_valid_30s)
 	);
 
 //stage 4,computing sliding window for 240s
@@ -124,7 +126,7 @@ wire [mid_width2-1:0] dout_30s;
 reg [2:0] counter_240s;
 wire data_valid_240s;
 
-assign dout_30s = $signed(dout_stage1_30s)+$signed(dout_stage2_30s)+$signed(dout_stage3_30s)+$signed(dout_stage4_30s)+$signed(dout_stage5_30s);
+assign dout_30s = $signed(dout_stage1_30s)+$signed(dout_stage2_30s)+$signed(dout_stage3_30s)+$signed(dout_stage4_30s)+$signed(dout_stage5_30s)+$signed(dout_stage6_30s);
 
 always @(posedge clk) begin
 	if (rst && counter_240s >=8) begin
@@ -142,6 +144,9 @@ wire signed [mid_width2-1:0] dout_stage2_240s;
 wire signed [mid_width2-1:0] dout_stage3_240s;
 wire signed [mid_width2-1:0] dout_stage4_240s;
 wire signed [mid_width2-1:0] dout_stage5_240s;
+wire signed [mid_width2-1:0] dout_stage6_240s;
+wire signed [mid_width2-1:0] dout_stage7_240s;
+wire signed [mid_width2-1:0] dout_stage8_240s;
 
 shift_reg_8 #(mid_width2,8) shift_reg_stage4(
 
@@ -151,12 +156,14 @@ shift_reg_8 #(mid_width2,8) shift_reg_stage4(
 	//output part
 	.dout_stage1(dout_stage1_240s),.dout_stage2(dout_stage2_240s),
 	.dout_stage3(dout_stage3_240s),.dout_stage4(dout_stage4_240s),
-	.dout_stage5(dout_stage5_240s),.data_valid(data_valid_240s)
+	.dout_stage5(dout_stage5_240s),.dout_stage5(dout_stage6_240s),
+	.dout_stage5(dout_stage7_240s),.dout_stage5(dout_stage8_240s),
+	.data_valid(data_valid_240s)
 	);
 
 //output stage
 wire signed [output_width-1:0] dout_240s;
-assign dout_240s = $signed(dout_stage1_240s)+$signed(dout_stage2_240s)+$signed(dout_stage3_240s)+$signed(dout_stage4_240s)+$signed(dout_stage5_240s); 
+assign dout_240s = $signed(dout_stage1_240s)+$signed(dout_stage2_240s)+$signed(dout_stage3_240s)+$signed(dout_stage4_240s); 
 
 assign dout = (dout_240s >>> 8); 
 
