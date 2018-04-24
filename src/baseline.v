@@ -4,9 +4,11 @@
 module baseline #(
 
 	parameter input_width = 25,
-	parameter mid_width1 = 28, 
-	parameter mid_width2 = 31,
-	parameter output_width = 34 //all computed by input + log(num of inputs) 
+	parameter mid_width1 = 28,  // 25+log(5)
+	parameter mid_width2 = 31,	// 28+log(5)
+	parameter mid_width3 = 34,	// 31+log(6)
+	parameter output_width = 37  // 34+log(8)
+	//all computed by input + log(num of inputs) 
 
 )(
 	//inputs
@@ -14,7 +16,7 @@ module baseline #(
 	input en,clk,rst, // en active low
 
 	//outputs
-	output wire [input_width-1:0] dout
+	output wire [output_width-1:0] dout
 	//output wire data_valid
 	
 );
@@ -41,7 +43,7 @@ shift_reg #(input_width,5) shift_reg_stage1(
 
 	//input part
 	.din(din),.en(en),.rst(rst),.data_ready(1'b1), //always taking new values
-	
+	.clk(clk),
 	//output part
 	.dout_stage1(dout_stage1_1s),.dout_stage2(dout_stage2_1s),
 	.dout_stage3(dout_stage3_1s),.dout_stage4(dout_stage4_1s),
@@ -56,7 +58,7 @@ wire data_valid_5s;
 assign dout_1s = $signed(dout_stage1_1s)+$signed(dout_stage2_1s)+$signed(dout_stage3_1s)+$signed(dout_stage4_1s)+$signed(dout_stage5_1s);
 
 always @(posedge clk) begin
-	if (rst && counter_5s >= 5) begin
+	if (rst || counter_5s >= 5) begin
 		counter_5s <= 0;
 	end
 	else if(counter_1s >= 250) begin
@@ -75,7 +77,7 @@ shift_reg #(mid_width1,5) shift_reg_stage2(
 
 	//input part
 	.din(dout_1s),.en(en),.rst(rst),.data_ready(data_ready_5s), //always taking new values
-	
+	.clk(clk),
 	//output part
 	.dout_stage1(dout_stage1_5s),.dout_stage2(dout_stage2_5s),
 	.dout_stage3(dout_stage3_5s),.dout_stage4(dout_stage4_5s),
@@ -90,7 +92,7 @@ wire data_valid_30s;
 assign dout_5s = $signed(dout_stage1_5s)+$signed(dout_stage2_5s)+$signed(dout_stage3_5s)+$signed(dout_stage4_5s)+$signed(dout_stage5_5s);
 
 always @(posedge clk) begin
-	if (rst && counter_30s >= 6) begin
+	if (rst || counter_30s >= 6) begin
 		counter_30s <= 0;
 	end
 	else if(counter_5s >= 5) begin
@@ -105,13 +107,13 @@ wire signed [mid_width2-1:0] dout_stage2_30s;
 wire signed [mid_width2-1:0] dout_stage3_30s;
 wire signed [mid_width2-1:0] dout_stage4_30s;
 wire signed [mid_width2-1:0] dout_stage5_30s;
-	wire signed [mid_width2-1:0] dout_stage6_30s;
+wire signed [mid_width2-1:0] dout_stage6_30s;
 
 shift_reg_6 #(mid_width2,6) shift_reg_stage3(
 
 	//input part
 	.din(dout_5s),.en(en),.rst(rst),.data_ready(data_ready_30s), //always taking new values
-	
+	.clk(clk),
 	//output part
 	.dout_stage1(dout_stage1_30s),.dout_stage2(dout_stage2_30s),
 	.dout_stage3(dout_stage3_30s),.dout_stage4(dout_stage4_30s),
@@ -122,14 +124,14 @@ shift_reg_6 #(mid_width2,6) shift_reg_stage3(
 //stage 4,computing sliding window for 240s
 
 wire data_ready_240s;
-wire [mid_width2-1:0] dout_30s;
-reg [2:0] counter_240s;
+wire [mid_width3-1:0] dout_30s;
+reg [3:0] counter_240s;
 wire data_valid_240s;
 
 assign dout_30s = $signed(dout_stage1_30s)+$signed(dout_stage2_30s)+$signed(dout_stage3_30s)+$signed(dout_stage4_30s)+$signed(dout_stage5_30s)+$signed(dout_stage6_30s);
 
 always @(posedge clk) begin
-	if (rst && counter_240s >=8) begin
+	if (rst || counter_240s >=8) begin
 		counter_240s <= 0;
 	end
 	else if(counter_30s >= 6) begin
@@ -139,20 +141,20 @@ end
 
 assign data_ready_240s = (data_valid_30s && counter_240s >= 8);
 
-wire signed [mid_width2-1:0] dout_stage1_240s;
-wire signed [mid_width2-1:0] dout_stage2_240s;
-wire signed [mid_width2-1:0] dout_stage3_240s;
-wire signed [mid_width2-1:0] dout_stage4_240s;
-wire signed [mid_width2-1:0] dout_stage5_240s;
-wire signed [mid_width2-1:0] dout_stage6_240s;
-wire signed [mid_width2-1:0] dout_stage7_240s;
-wire signed [mid_width2-1:0] dout_stage8_240s;
+wire signed [mid_width3-1:0] dout_stage1_240s;
+wire signed [mid_width3-1:0] dout_stage2_240s;
+wire signed [mid_width3-1:0] dout_stage3_240s;
+wire signed [mid_width3-1:0] dout_stage4_240s;
+wire signed [mid_width3-1:0] dout_stage5_240s;
+wire signed [mid_width3-1:0] dout_stage6_240s;
+wire signed [mid_width3-1:0] dout_stage7_240s;
+wire signed [mid_width3-1:0] dout_stage8_240s;
 
-shift_reg_8 #(mid_width2,8) shift_reg_stage4(
+shift_reg_8 #(mid_width3,8) shift_reg_stage4(
 
 	//input part
 	.din(dout_30s),.en(en),.rst(rst),.data_ready(data_ready_240s), //always taking new values
-	
+	.clk(clk),
 	//output part
 	.dout_stage1(dout_stage1_240s),.dout_stage2(dout_stage2_240s),
 	.dout_stage3(dout_stage3_240s),.dout_stage4(dout_stage4_240s),

@@ -5,14 +5,14 @@
 // testbench for subdatapath
 // using the actual ieeg signal as input, you can find the input at testint_data.txt and bits for seizure in testint_tag.txt
 `define CLK_PERIOD 30
-`define DATA_WIDTH 16
-`define OUTPUT_WIDTH 34
+`define DATA_WIDTH 25
+`define OUTPUT_WIDTH 37
 
 
 module tb_baseline_module;
     // Inputs
     reg clk, en,rst;
-    wire data_valid;
+    //wire data_valid;
     reg signed [`DATA_WIDTH-1:0] din;
     wire signed [`OUTPUT_WIDTH-1:0] dout;
     reg signed [`DATA_WIDTH-1:0] fin;
@@ -25,7 +25,7 @@ module tb_baseline_module;
     
     // Instantiate the Unit Under Test (UUT)
 
-    baseline #(25,28,31,34) uut(
+    baseline #(25,28,31,34,37) uut(
     	//input
     	.din(din),.en(en),.rst(rst),
     	.clk(clk),
@@ -44,25 +44,25 @@ module tb_baseline_module;
       $dumpvars;
     	
     	
-      	data_file = $fopen("testin", "r");
-     	write_file = $fopen("fout.txt", "w");
-      	if (data_file != 1'b0)
-        	$display("data_file handle is successful");
-    	if (write_file != 1'b0)
+      	//data_file = $fopen("testin", "r");
+     	//write_file = $fopen("fout.txt", "w");
+      	//if (data_file != 1'b0)
+        //	$display("data_file handle is successful");
+    	//if (write_file != 1'b0)
     	
         din = 0; rst = 1; en = 0;
         #100;
         rst = 1; 
         #200;
         rst = 0; 
-      repeat(50000) begin
+      repeat(300000) begin
       	@(posedge clk);
-        scan_file = $fscanf(data_file, "%d\n", fin);
-        $fwrite(write_file, "%d\n", dout);
-        din = fin; 
+        //scan_file = $fscanf(data_file, "%d\n", fin);
+        //$fwrite(write_file, "%d\n", dout);
+        //din = fin; 
         //#100;
         
-        //din <= $random % 100;
+        din <= $random % 100;
       end
       $finish();
     end
