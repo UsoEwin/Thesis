@@ -207,25 +207,64 @@ module datapath #(
 	);
 
 // binary classification
+	wire ll_binary;
+	wire ne_binary;
+	wire ps_binary;
+	wire theta_binary;
+	wire alpha_binary;
+	wire beta_binary;
+
+	binary_channel #(3891, 11878, 5530, 7680, 11878, 20480) channel_0 (
+		.ll_out(ll_out),
+		.ll_base(ll_baseline_out),
+		.ll_binary(ll_binary),
+		.ne_out(ne_out),
+		.ne_base(ne_baseline_out),
+		.ne_binary(ne_binary),
+		.ps_out(ps_out),
+		.ps_base(ps_baseline_out),
+		.ps_binary(ps_binary),
+		.theta_out(ps_out_theta),
+		.theta_base(theta_baseline_out),
+		.theta_binary(theta_binary),
+		.alpha_out(ps_out_alpha),
+		.alpha_base(alpha_baseline_out),
+		.alpha_binary(alpha_binary),
+		.beta_out(ps_out_beta),
+		.beta_base(beta_baseline_out),
+		.beta_binary(beta_binary)
+	);
 
 // weighted sum
+	wire signed [11:0] weighted_sum_0;
+	weighted_sum #(18, 39, -7, 382, 64, 68) ws0 (
+		.ll(ll_bianry),
+		.ne(ne_bianry),
+		.ps(ps_bianry),
+		.theta(theta_bianry),
+		.alpha(alpha_bianry),
+		.beta(beta_bianry),
+		.weighted_sum_out(weighted_sum_0)
+	);
 
 // controller
+	parameter THRESHOLD = 'd300;
+	assign stimulation = (weighted_sum_0 >= THRESHOLD);
 
-	controller #(input_width + 9, input_width * 2 + 8) myctrl(
-		//outcome sigals
-		.din_ll(ll_out),
-		.din_ne(ne_out),
-		.din_ps(ps_out),
+	// controller #(input_width + 9, input_width * 2 + 8) myctrl(
+	// 	//outcome sigals
+	// 	.din_ll(ll_out),
+	// 	.din_ne(ne_out),
+	// 	.din_ps(ps_out),
 		
-		//din ready
-		.data_ready_ll(data_valid_ll),
-		.data_ready_ne(data_valid_ne),
-		.data_ready_ps(data_valid_ps),
+	// 	//din ready
+	// 	.data_ready_ll(data_valid_ll),
+	// 	.data_ready_ne(data_valid_ne),
+	// 	.data_ready_ps(data_valid_ps),
 
-		//output
-		.stimulation(stimulation)
-	);
+	// 	//output
+	// 	.stimulation(stimulation)
+	// );
 
 endmodule
 
