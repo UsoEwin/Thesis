@@ -1,7 +1,7 @@
 # NEURODETECT
 ## On-chip Biosignal Computation for Health Mornitoring
 
-## Contributer: Jingbo Wu(JW), Chen Fu(CF), Mary Lee Lawrence(MLL)
+## Contributer: Jingbo Wu(JW), Chen Fu(CF), Mary Lee Lawrence(MLL) from [Muller Lab](https://people.eecs.berkeley.edu/~rikky/Home.html)
 
 ### Introduction
 
@@ -15,9 +15,10 @@ This repo includes a fully implemented 16 channels seizure detector using iEEG s
 	*Xilinx ISE 14.7 for synthesizing the code, generating bit files
 	*FrontPanel for sending the bit files into XEM 6010 FPGA
 
-### How to train
+### Setup
+To clone this repo, type following command in your bash or command line:
 ```
-python main.py
+git clone https://github.com/UsoEwin/Thesis.git
 ```
 
 if you want to see the flag 
