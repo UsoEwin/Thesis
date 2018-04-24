@@ -144,7 +144,73 @@ module datapath #(
 		.data_valid(data_valid_ps_beta)
 	);
 
-//controller
+// baseline
+
+	// line length baseline
+	wire [ll_output_width+8:0] ll_baseline_out;
+	baseline #(ll_output_width, ll_output_width + 3, ll_output_width + 6, ll_output_width + 9) ll_baseline (
+		.din(ll_out),
+		.en(en),
+		.clk(clk),
+		.rst(rst),
+		.dout(ll_baseline_out)
+	);
+
+	// non-linear energy baseline
+	wire [output_width+8:0] ne_baseline_out;
+	baseline #(output_width, output_width + 3, output_width + 6, output_width + 9) ne_baseline (
+		.din(ne_out),
+		.en(en),
+		.clk(clk),
+		.rst(rst),
+		.dout(ne_baseline_out)
+	);
+
+	// power spectrum 4-70 baseline
+	wire [output_width+8:0] ps_baseline_out;
+	baseline #(output_width, output_width + 3, output_width + 6, output_width + 9) ps_baseline (
+		.din(ps_out),
+		.en(en),
+		.clk(clk),
+		.rst(rst),
+		.dout(ps_baseline_out)
+	);
+
+	// power spectrum theta baseline
+	wire [output_width+8:0] theta_baseline_out;
+	baseline #(output_width, output_width + 3, output_width + 6, output_width + 9) theta_baseline (
+		.din(ps_out_theta),
+		.en(en),
+		.clk(clk),
+		.rst(rst),
+		.dout(theta_baseline_out)
+	);
+
+	// power spectrum alpha baseline
+	wire [output_width+8:0] alpha_baseline_out;
+	baseline #(output_width, output_width + 3, output_width + 6, output_width + 9) alpha_baseline (
+		.din(ps_out_alpha),
+		.en(en),
+		.clk(clk),
+		.rst(rst),
+		.dout(alpha_baseline_out)
+	);
+
+	// power spectrum beta baseline
+	wire [output_width+8:0] beta_baseline_out;
+	baseline #(output_width, output_width + 3, output_width + 6, output_width + 9) beta_baseline (
+		.din(ps_out_beta),
+		.en(en),
+		.clk(clk),
+		.rst(rst),
+		.dout(beta_baseline_out)
+	);
+
+// binary classification
+
+// weighted sum
+
+// controller
 
 	controller #(ll_output_width,output_width) myctrl(
 
