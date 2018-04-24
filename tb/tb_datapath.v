@@ -7,7 +7,7 @@
 `define CLK_PERIOD 30
 
 //io port sizes
-`define DATA_WIDTH 16
+`define DATA_WIDTH 32
 `define UNIT_WIDTH 32
 `define MID_WIDTH 37
 `define OUTPUT_WIDTH 40
@@ -31,7 +31,7 @@ module tb_datapath;
     // Outputs
     wire stimulation;
     // Instantiate the Unit Under Test (UUT)
-    datapath #(`DATA_WIDTH,`UNIT_WIDTH,`MID_WIDTH,`OUTPUT_WIDTH,`LL_MID_WIDTH,`LL_OUTPUT_WIDTH) uut (
+    datapath uut (
         .clk(clk), 
         .rst(rst),
         .en(en),
@@ -44,28 +44,23 @@ module tb_datapath;
     always #(`CLK_PERIOD/2) clk = ~clk;
 
     initial begin
-      $dumpvars;
-    	
-    	
-        data_file = $fopen("testin", "r");
-     	  write_file = $fopen("fout.txt", "w");
-      	if (data_file != 1'b0)
-          $display("data_file handle is successful");
-    	 if (write_file != 1'b0)
-          $display("write_file handle is successful");
-        din = 0; rst = 1; en = 0; cycle_count<=0;
-        #100;
-        rst = 1; 
-        #200;
-        rst = 0; 
-      repeat(50000) begin
+      data_file = $fopen("final_data.txt", "r");
+   	  write_file = $fopen("datapath_newdata_out", "w");
+    	if (data_file != 1'b0)
+        $display("data_file handle is successful");
+    	if (write_file != 1'b0)
+        $display("write_file handle is successful");
+      din = 0; rst = 1; en = 0; cycle_count<=0;
+      #100;
+      rst = 1; 
+      #200;
+      rst = 0; 
+      repeat(320000) begin
       	@(posedge clk);
         scan_file = $fscanf(data_file, "%d\n", fin);
         $fwrite(write_file, "%d\n", stimulation);
         din <= fin; 
-        cycle_count <= cycle_count + 1; 
-        //#100;
-        
+        cycle_count <= cycle_count + 1;
       end
     $finish();
     end

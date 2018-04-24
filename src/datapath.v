@@ -7,7 +7,7 @@
 
 module datapath #(
 	//overall
-	parameter input_width = 16,  
+	parameter input_width = 32,  
 
 	//for ne and sp
 	parameter unit_width = 32,
@@ -19,8 +19,8 @@ module datapath #(
 	parameter ll_output_width = 25
 )(
 
-	input signed [input_width-1:0]	din,
-	input en,rst,clk, //rst active high,en active low
+	input signed [input_width-1:0] din,
+	input en, rst, clk, //rst active high,en active low
   	output stimulation
 	
 	//please put debugging purpose ports after this line
@@ -29,7 +29,7 @@ module datapath #(
 	
 //filters
 	wire signed [31:0] filter_4to70_out;
-	filter_4to70 my_filter_4to70(
+	f_4to70 my_filter_4to70(
 		.x(din),
 		.y(filter_4to70_out),
 		.reset(rst),
@@ -40,10 +40,10 @@ module datapath #(
 //computing module
 
 	// line length
-	wire signed [ll_output_width-1:0] ll_out;
+	wire signed [input_width + 8:0] ll_out;
 	wire data_valid_ll;
 
-	ll_module #(input_width,ll_mid_width,ll_output_width) ll(
+	ll_module #(input_width, input_width + 6 , input_width + 9) ll(
 		.din(filter_4to70_out),
 		.en(en),
 		.rst(rst),
@@ -53,10 +53,10 @@ module datapath #(
 	);
 
 	// non-linear energy
-	wire signed [output_width-1:0] ne_out;
+	wire signed [input_width * 2 + 7:0] ne_out;
 	wire data_valid_ne;
 
-	ne_module #(input_width,unit_width,mid_width,output_width) ne(
+	ne_module #(input_width, input_width * 2, input_width * 2 + 5, input_width * 2 + 8) ne(
 		.din(filter_4to70_out),
 		.en(en),
 		.rst(rst),
@@ -66,10 +66,10 @@ module datapath #(
 	);
 
 	// power spectrum 4-70
-	wire signed [output_width-1:0] ps_out;
+	wire signed [input_width * 2 + 7:0] ps_out;
 	wire data_valid_ps;
 
-	ps_module #(input_width,unit_width,mid_width,output_width) ps(
+	ps_module #(input_width, input_width * 2, input_width * 2 + 5, input_width * 2 + 8) ps(
 		.din(filter_4to70_out),
 		.en(en),
 		.rst(rst),
@@ -212,16 +212,19 @@ module datapath #(
 
 // controller
 
-	controller #(ll_output_width,output_width) myctrl(
+	controller #(input_width + 9, input_width * 2 + 8) myctrl(
+		//outcome sigals
+		.din_ll(ll_out),
+		.din_ne(ne_out),
+		.din_ps(ps_out),
+		
+		//din ready
+		.data_ready_ll(data_valid_ll),
+		.data_ready_ne(data_valid_ne),
+		.data_ready_ps(data_valid_ps),
 
-	//outcome sigals
-	.din_ll(ll_out),.din_ne(ne_out),.din_ps(ps_out),
-	
-	//din ready
-	.data_ready_ll(data_valid_ll),.data_ready_ne(data_valid_ne),.data_ready_ps(data_valid_ps),
-
-	//output
-	.stimulation(stimulation)
+		//output
+		.stimulation(stimulation)
 	);
 
 endmodule

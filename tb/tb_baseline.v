@@ -6,9 +6,10 @@
 // using the actual ieeg signal as input, you can find the input at testint_data.txt and bits for seizure in testint_tag.txt
 `define CLK_PERIOD 30
 `define DATA_WIDTH 16
+`define OUTPUT_WIDTH 34
 
 
-module tb_ll_module;
+module tb_baseline_module;
     // Inputs
     reg clk, en,rst;
     wire data_valid;
