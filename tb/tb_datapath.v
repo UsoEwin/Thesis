@@ -44,8 +44,9 @@ module tb_datapath;
     always #(`CLK_PERIOD/2) clk = ~clk;
 
     initial begin
-      data_file = $fopen("final_data.txt", "r");
-   	  write_file = $fopen("datapath_newdata_out", "w");
+      //data_file = $fopen("final_data.txt", "r");
+   	  data_file = $fopen("testin","r");
+      write_file = $fopen("datapath_newdata_out", "w");
     	if (data_file != 1'b0)
         $display("data_file handle is successful");
     	if (write_file != 1'b0)
