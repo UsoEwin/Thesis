@@ -16,7 +16,7 @@
 
 module tb_datapath;
     // Inputs
-    reg clk, en,rst;
+    reg clk, en, rst;
     
     reg signed [`DATA_WIDTH-1:0] din;
     
@@ -24,19 +24,27 @@ module tb_datapath;
 
     reg [15:0] cycle_count;
 
+    wire seizure;
+
     integer data_file;
     integer scan_file;
-  	integer write_file;
+
+    integer write_file_ll;
+    integer write_file_ne;
+    integer write_file_ps;
+    integer write_file_theta;
+    integer write_file_alpha;
+    integer write_file_beta;
 
     // Outputs
     wire stimulation;
     // Instantiate the Unit Under Test (UUT)
-    datapath uut (
+    neurondetect uut (
         .clk(clk), 
         .rst(rst),
         .en(en),
-        .din(din), 
-        .stimulation(stimulation)
+        .din(din),
+        .seizure(seizure)
     );
 
     // Generate clock with 100ns period
@@ -44,12 +52,17 @@ module tb_datapath;
     always #(`CLK_PERIOD/2) clk = ~clk;
 
     initial begin
-      data_file = $fopen("final_data.txt", "r");
-   	  write_file = $fopen("datapath_newdata_out", "w");
+      	data_file = $fopen("final_data.txt", "r");
+   	//write_file_ll = $fopen("datapath_out_ll", "w");
+	//write_file_ne = $fopen("datapath_out_ne", "w");
+	//write_file_ps = $fopen("datapath_out_ps", "w");
+	//write_file_theta = $fopen("datapath_out_theta", "w");
+	//write_file_alpha = $fopen("datapath_out_alpha", "w");
+	//write_file_beta = $fopen("datapath_out_beta", "w");
     	if (data_file != 1'b0)
         $display("data_file handle is successful");
-    	if (write_file != 1'b0)
-        $display("write_file handle is successful");
+    	//if (write_file != 1'b0)
+        //$display("write_file handle is successful");
       din = 0; rst = 1; en = 0; cycle_count<=0;
       #100;
       rst = 1; 
@@ -58,15 +71,20 @@ module tb_datapath;
       repeat(320000) begin
       	@(posedge clk);
         scan_file = $fscanf(data_file, "%d\n", fin);
-        $fwrite(write_file, "%d\n", stimulation);
-        din <= fin; 
+        //$fwrite(write_file_ll, "%d\n", ll_test);
+	//$fwrite(write_file_ne, "%d\n", ne_test);
+	//$fwrite(write_file_ps, "%d\n", ps_test);
+	//$fwrite(write_file_theta, "%d\n", theta_test);
+	//$fwrite(write_file_alpha, "%d\n", alpha_test);
+	//$fwrite(write_file_beta, "%d\n", beta_test);
+        din = fin; 
         cycle_count <= cycle_count + 1;
       end
     $finish();
     end
   
   initial begin
-    $monitor("din is %d, stimulation is %d, at time %0d",din, stimulation, $time);
+    $monitor("din is %d, stimulation is %d, at time %0d",din, seizure, $time);
   end
   
 endmodule

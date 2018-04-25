@@ -20,12 +20,12 @@ reg signed [63:0] f1_n1, f1_n2;
 wire signed [63:0] f1_n1_input, f1_n2_input, f1_n0; 
 
 // filter coefficients values
-assign a2 = -240788605;
-assign a3 = 115363971;
+assign a2 = -187539761;
+assign a3 = 83998890;
   
-assign b1 = 9426879;
+assign b1 = 25109419;
 assign b2 = 0;
-assign b3 = -9426879;
+assign b3 = -25109419;
 
 // update filter variables
 assign b1_in = b1*x;

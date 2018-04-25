@@ -16,10 +16,10 @@ module baseline #(
 	input en,clk,rst, // en active low
 
 	//outputs
-	output wire [output_width-1:0] dout
-	//output wire data_valid
-	
+	output wire [output_width-1:0] dout,
+	output data_valid
 );
+
 // stage 1, compute sliding window for 1s
 reg [7:0] counter_1s;
 wire data_valid_1s;
@@ -162,6 +162,8 @@ shift_reg_8 #(mid_width3,8) shift_reg_stage4(
 	.dout_stage7(dout_stage7_240s),.dout_stage8(dout_stage8_240s),
 	.data_valid(data_valid_240s)
 	);
+
+assign data_valid = data_valid_240s;
 
 //output stage
 wire signed [output_width-1:0] dout_240s;
