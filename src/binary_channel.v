@@ -32,11 +32,11 @@ module binary_channel #(
 	output beta_binary
 );
 	
-	assign ll_binary = (ll_out >= ll_base * s0) & ll_valid;
-	assign ne_binary = (ne_out >= ne_base * s1) & ne_valid;
-	assign ps_binary = (ps_out >= ps_base * s2) & ps_valid;
-	assign theta_binary = (theta_out >= theta_base * s3) & theta_valid;
-	assign alpha_binary = (alpha_out >= alpha_base * s4) & alpha_valid;
-	assign beta_binary = (beta_out >= beta_base * s5) & beta_valid;
+	assign ll_binary = (ll_out >= ll_base * s0);// & ll_valid;
+	assign ne_binary = (ne_out >= ne_base * s1);// & ne_valid;
+	assign ps_binary = (ps_out >= ps_base * s2);// & ps_valid;
+	assign theta_binary = (theta_out >= theta_base * s3);// & theta_valid;
+	assign alpha_binary = (alpha_out >= alpha_base * s4);// & alpha_valid;
+	assign beta_binary = (beta_out >= beta_base * s5);// & beta_valid;
 
 endmodule
