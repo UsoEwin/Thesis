@@ -1,5 +1,7 @@
 load final_data.mat;
 
+%plot(datapath_out_ll(150000:173759, :))
+
 %plot the original seizure
 t = 1:323751;
 t2 = 1:320000;
