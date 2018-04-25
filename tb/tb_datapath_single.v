@@ -44,7 +44,7 @@ module tb_datapath;
     // Outputs
     wire stimulation;
     // Instantiate the Unit Under Test (UUT)
-    datapath uut (
+    datapath_single uut (
       .clk(clk), 
       .rst(rst),
       .en(en),
