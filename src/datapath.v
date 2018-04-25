@@ -106,10 +106,10 @@ module datapath #(
 	);
 
 	// power spectrum theta band
-	wire signed [output_width-1:0] ps_out_theta;
+	wire signed [input_width * 2 + 7:0] ps_out_theta;
 	wire data_valid_ps_theta;
 
-	ps_module #(input_width,unit_width,mid_width,output_width) ps_theta(
+	ps_module #(input_width, input_width * 2, input_width * 2 + 5, input_width * 2 + 8) ps_theta(
 		.din(theta_out),
 		.en(en),
 		.rst(rst),
@@ -119,10 +119,10 @@ module datapath #(
 	);
 
 	// power spectrum alpha band
-	wire signed [output_width-1:0] ps_out_alpha;
+	wire signed [input_width * 2 + 7:0] ps_out_alpha;
 	wire data_valid_ps_alpha;
 
-	ps_module #(input_width,unit_width,mid_width,output_width) ps_alpha(
+	ps_module #(input_width, input_width * 2, input_width * 2 + 5, input_width * 2 + 8) ps_alpha(
 		.din(alpha_out),
 		.en(en),
 		.rst(rst),
@@ -132,10 +132,10 @@ module datapath #(
 	);
 
 	// power spectrum beta band
-	wire signed [output_width-1:0] ps_out_beta;
+	wire signed [input_width * 2 + 7:0] ps_out_beta;
 	wire data_valid_ps_beta;
 
-	ps_module #(input_width,unit_width,mid_width,output_width) ps_beta(
+	ps_module #(input_width, input_width * 2, input_width * 2 + 5, input_width * 2 + 8) ps_beta(
 		.din(beta_out),
 		.en(en),
 		.rst(rst),
@@ -147,8 +147,8 @@ module datapath #(
 // baseline
 
 	// line length baseline
-	wire [ll_output_width+8:0] ll_baseline_out;
-	baseline #(ll_output_width, ll_output_width + 3, ll_output_width + 6, ll_output_width + 9) ll_baseline (
+	wire [ll_output_width+11:0] ll_baseline_out;
+	baseline #(ll_output_width, ll_output_width + 3, ll_output_width + 6, ll_output_width + 9, ll_output_width + 12) ll_baseline (
 		.din(ll_out),
 		.en(en),
 		.clk(clk),
@@ -157,8 +157,8 @@ module datapath #(
 	);
 
 	// non-linear energy baseline
-	wire [output_width+8:0] ne_baseline_out;
-	baseline #(output_width, output_width + 3, output_width + 6, output_width + 9) ne_baseline (
+	wire [output_width+11:0] ne_baseline_out;
+	baseline #(output_width, output_width + 3, output_width + 6, output_width + 9, output_width + 12) ne_baseline (
 		.din(ne_out),
 		.en(en),
 		.clk(clk),
@@ -167,8 +167,8 @@ module datapath #(
 	);
 
 	// power spectrum 4-70 baseline
-	wire [output_width+8:0] ps_baseline_out;
-	baseline #(output_width, output_width + 3, output_width + 6, output_width + 9) ps_baseline (
+	wire [output_width+11:0] ps_baseline_out;
+	baseline #(output_width, output_width + 3, output_width + 6, output_width + 9, output_width + 12) ps_baseline (
 		.din(ps_out),
 		.en(en),
 		.clk(clk),
@@ -177,8 +177,8 @@ module datapath #(
 	);
 
 	// power spectrum theta baseline
-	wire [output_width+8:0] theta_baseline_out;
-	baseline #(output_width, output_width + 3, output_width + 6, output_width + 9) theta_baseline (
+	wire [output_width+11:0] theta_baseline_out;
+	baseline #(output_width, output_width + 3, output_width + 6, output_width + 9, output_width + 12) theta_baseline (
 		.din(ps_out_theta),
 		.en(en),
 		.clk(clk),
@@ -187,8 +187,8 @@ module datapath #(
 	);
 
 	// power spectrum alpha baseline
-	wire [output_width+8:0] alpha_baseline_out;
-	baseline #(output_width, output_width + 3, output_width + 6, output_width + 9) alpha_baseline (
+	wire [output_width+11:0] alpha_baseline_out;
+	baseline #(output_width, output_width + 3, output_width + 6, output_width + 9, output_width + 12) alpha_baseline (
 		.din(ps_out_alpha),
 		.en(en),
 		.clk(clk),
@@ -197,8 +197,8 @@ module datapath #(
 	);
 
 	// power spectrum beta baseline
-	wire [output_width+8:0] beta_baseline_out;
-	baseline #(output_width, output_width + 3, output_width + 6, output_width + 9) beta_baseline (
+	wire [output_width+11:0] beta_baseline_out;
+	baseline #(output_width, output_width + 3, output_width + 6, output_width + 9, output_width + 12) beta_baseline (
 		.din(ps_out_beta),
 		.en(en),
 		.clk(clk),
@@ -267,4 +267,3 @@ module datapath #(
 	// );
 
 endmodule
-
