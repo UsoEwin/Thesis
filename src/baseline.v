@@ -163,7 +163,7 @@ shift_reg_8 #(mid_width3,8) shift_reg_stage4(
 	.data_valid(data_valid_240s)
 	);
 
-assign data_valid = data_valid_240s;
+assign data_valid = data_valid_30s;
 
 //output stage
 wire signed [output_width-1:0] dout_240s;

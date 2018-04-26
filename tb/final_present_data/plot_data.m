@@ -26,16 +26,18 @@ axis([0 323751 min(data) max(data)]);
 
 %original figures
 
-%llth = zeros(1,50001) + 3000;
-%psth = zeros(1,50001) + 1e7;
-%neth = zeros(1,50001) + 250000;
 dll = dlmread('datapath_out_ll');
 dps = dlmread('datapath_out_ps');
 dne = dlmread('datapath_out_ne');
 dpsalpha = dlmread('datapath_out_alpha');
 dpsbeta = dlmread('datapath_out_beta');
 dpstheta = dlmread('datapath_out_theta');
-
+baselinell = dlmread('datapath_out_ll_bs');
+baselineps = dlmread('datapath_out_ps_bs');
+baselinealpha = dlmread('datapath_out_alpha_bs');
+baselinebeta = dlmread('datapath_out_beta_bs');
+baselinetheta = dlmread('datapath_out_theta_bs');
+baselinene = dlmread('datapath_out_ne_bs');
 figure(2);
 subplot(2,1,1); 
 plot(t,data,'-b');
@@ -50,6 +52,7 @@ grid on;
 subplot(2,1,2);
 plot(t2,dll,'-b');
 hold on;
+plot(t2,baselinell,'Color',[0.85 0.33 0.10]);
 %plot(t,llth,'-p');
 title('Line length data output from simulation','FontSize',22);
 xlabel('data indices','FontSize',22) % x-axis label
