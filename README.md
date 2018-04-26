@@ -15,10 +15,10 @@ This repo includes a fully implemented 16 channels seizure detector using iEEG s
 	*Xilinx ISE 14.7 for synthesizing the code, generating bit files
 	*FrontPanel for sending the bit files into XEM 6010 FPGA
 
-### Setup & How to test
-To clone this repo, type following command in your bash or command line(or simply click the download button on this page):
+### Setup
+To clone this repo and swtich to ctrl branch, type following command in your bash or command line(or simply click the download button on this page):
 ```
 git clone https://github.com/UsoEwin/Thesis.git
+git fetch
+git checkout ctrl
 ```
-
-To run the test on the 
