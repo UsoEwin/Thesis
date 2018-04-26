@@ -139,7 +139,7 @@ always @(posedge clk) begin
 	end
 end
 
-assign data_ready_240s = (data_valid_30s && counter_240s >= 8);
+assign data_ready_240s = (data_valid_30s && counter_30s >= 6);
 
 wire signed [mid_width3-1:0] dout_stage1_240s;
 wire signed [mid_width3-1:0] dout_stage2_240s;
