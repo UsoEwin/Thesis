@@ -57,7 +57,7 @@ wire signed [input_width-1:0] dout_stage5_1s;
 shift_reg #(input_width,5) shift_reg_stage1(
 
 	//input part
-	.din(din),.en(en),.rst(rst),.data_ready(1'b1), //always taking new values
+	.din(din),.en(en),.rst(rst),.data_ready(data_ready_02s), //always taking new values
 	.clk(clk),
 	//output part
 	.dout_stage1(dout_stage1_1s),.dout_stage2(dout_stage2_1s),
@@ -184,6 +184,6 @@ assign data_valid = data_valid_30s;
 wire signed [output_width-1:0] dout_240s;
 assign dout_240s = $signed(dout_stage1_240s)+$signed(dout_stage2_240s)+$signed(dout_stage3_240s)+$signed(dout_stage4_240s); 
 
-assign dout = (dout_240s >>> 8); 
+assign dout = (dout_240s >>> 10); 
 
 endmodule

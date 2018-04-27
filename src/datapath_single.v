@@ -5,26 +5,18 @@
 
 // under testing
 
-module datapath_single #(
+module datapath #(
 	//overall
 	parameter input_width = 32,  
-	//for ne and sp
-	parameter output_width = 40,
-	//for ll
-	parameter ll_output_width = 25,
 
-	parameter w0 = 0,
-	parameter w1 = 0,
-	parameter w2 = 0,
-	parameter w3 = 0,
-	parameter w4 = 0,
-	parameter w5 = 0,
-	parameter ws0 = 0,
-	parameter ws1 = 0,
-	parameter ws2 = 0,
-	parameter ws3 = 0,
-	parameter ws4 = 0,
-	parameter ws5 = 0
+	//for ne and sp
+	parameter unit_width = 32,
+	parameter mid_width = 37,
+	parameter output_width = 40,
+
+	//for ll
+	parameter ll_mid_width = 22,
+	parameter ll_output_width = 25
 )(
 
 	input signed [input_width-1:0] din,
@@ -38,11 +30,19 @@ module datapath_single #(
 	output [31:0] alpha_test,
 	output [31:0] beta_test,
 
-  	output signed [11:0] weight_sum
+	output [31:0] ll_bs,
+	output [31:0] ne_bs,
+	output [31:0] ps_bs,
+	output [31:0] theta_bs,
+	output [31:0] alpha_bs,
+	output [31:0] beta_bs,
+
+  	output stimulation
 	
 	//please put debugging purpose ports after this line
 
 );
+
 
 	
 //filters
@@ -166,82 +166,70 @@ module datapath_single #(
 
 	// line length baseline
 	wire [ll_output_width+11:0] ll_baseline_out;
-	wire data_valid_base_ll;
 	baseline #(ll_output_width, ll_output_width + 3, ll_output_width + 6, ll_output_width + 9, ll_output_width + 12) ll_baseline (
 		.din(ll_out),
 		.en(en),
 		.clk(clk),
 		.rst(rst),
-		.dout(ll_baseline_out),
-		.data_valid(data_valid_base_ll)
+		.dout(ll_baseline_out)
 	);
 
 	// non-linear energy baseline
 	wire [output_width+11:0] ne_baseline_out;
-	wire data_valid_base_ne;
 	baseline #(output_width, output_width + 3, output_width + 6, output_width + 9, output_width + 12) ne_baseline (
 		.din(ne_out),
 		.en(en),
 		.clk(clk),
 		.rst(rst),
-		.dout(ne_baseline_out),
-		.data_valid(data_valid_base_ne)
+		.dout(ne_baseline_out)
 	);
 
 	// power spectrum 4-70 baseline
 	wire [output_width+11:0] ps_baseline_out;
-	wire data_valid_base_ps;
 	baseline #(output_width, output_width + 3, output_width + 6, output_width + 9, output_width + 12) ps_baseline (
 		.din(ps_out),
 		.en(en),
 		.clk(clk),
 		.rst(rst),
-		.dout(ps_baseline_out),
-		.data_valid(data_valid_base_ps)
+		.dout(ps_baseline_out)
 	);
 
 	// power spectrum theta baseline
 	wire [output_width+11:0] theta_baseline_out;
-	wire data_valid_base_theta;
 	baseline #(output_width, output_width + 3, output_width + 6, output_width + 9, output_width + 12) theta_baseline (
 		.din(ps_out_theta),
 		.en(en),
 		.clk(clk),
 		.rst(rst),
-		.dout(theta_baseline_out),
-		.data_valid(data_valid_base_theta)
+		.dout(theta_baseline_out)
 	);
 
 	// power spectrum alpha baseline
 	wire [output_width+11:0] alpha_baseline_out;
-	wire data_valid_base_alpha;
 	baseline #(output_width, output_width + 3, output_width + 6, output_width + 9, output_width + 12) alpha_baseline (
 		.din(ps_out_alpha),
 		.en(en),
 		.clk(clk),
 		.rst(rst),
-		.dout(alpha_baseline_out),
-		.data_valid(data_valid_base_alpha)
+		.dout(alpha_baseline_out)
 	);
 
 	// power spectrum beta baseline
 	wire [output_width+11:0] beta_baseline_out;
-	wire data_valid_base_beta;
 	baseline #(output_width, output_width + 3, output_width + 6, output_width + 9, output_width + 12) beta_baseline (
 		.din(ps_out_beta),
 		.en(en),
 		.clk(clk),
 		.rst(rst),
-		.dout(beta_baseline_out),
-		.data_valid(data_valid_base_beta)
+		.dout(beta_baseline_out)
 	);
 
-	assign ll_test = ll_out;
-	assign ps_test = ps_out;
-	assign ne_test = ne_out;
-	assign theta_test = ps_out_theta;
-	assign alpha_test = ps_out_alpha;
-	assign beta_test = ps_out_beta;
+	assign ll_bs = ll_baseline_out;
+	assign ne_bs = ne_baseline_out;
+	assign ps_bs = ps_baseline_out;
+	assign theta_bs = theta_baseline_out;
+	assign alpha_bs = alpha_baseline_out;
+	assign beta_bs = beta_baseline_out;
 
 // binary classification
 	wire ll_binary;
@@ -251,43 +239,49 @@ module datapath_single #(
 	wire alpha_binary;
 	wire beta_binary;
 
-	binary_channel #(w0, w1, w2, w3, w4, w5) channel_0 (
+	binary_channel #(5, 14, 6, 5, 12, 14) channel_0 (
 		.ll_out(ll_out),
 		.ll_base(ll_baseline_out),
-		.ll_valid(data_valid_base_ll),
 		.ll_binary(ll_binary),
 		.ne_out(ne_out),
 		.ne_base(ne_baseline_out),
-		.ne_valid(data_valid_base_ne),
 		.ne_binary(ne_binary),
 		.ps_out(ps_out),
 		.ps_base(ps_baseline_out),
-		.ps_valid(data_valid_base_ps),
 		.ps_binary(ps_binary),
 		.theta_out(ps_out_theta),
 		.theta_base(theta_baseline_out),
-		.theta_valid(data_valid_base_theta),
 		.theta_binary(theta_binary),
 		.alpha_out(ps_out_alpha),
 		.alpha_base(alpha_baseline_out),
-		.alpha_valid(data_valid_base_alpha),
 		.alpha_binary(alpha_binary),
 		.beta_out(ps_out_beta),
 		.beta_base(beta_baseline_out),
-		.beta_valid(data_valid_base_beta),
 		.beta_binary(beta_binary)
 	);
 
 // weighted sum
-	
-	weighted_sum #(ws0, ws1, ws2, ws3, ws4, ws5) ws (
-		.ll(ll_binary),
-		.ne(ne_binary),
-		.ps(ps_binary),
-		.theta(theta_binary),
-		.alpha(alpha_binary),
-		.beta(beta_binary),
-		.weighted_sum_out(weight_sum)
+	wire signed [11:0] weighted_sum_0;
+	weighted_sum #(18, 39, -7, 382, 64, 68) ws0 (
+		.ll(ll_bianry),
+		.ne(ne_bianry),
+		.ps(ps_bianry),
+		.theta(theta_bianry),
+		.alpha(alpha_bianry),
+		.beta(beta_bianry),
+		.weighted_sum_out(weighted_sum_0)
 	);
 
+// controller
+	parameter THRESHOLD = 'd300;
+	assign stimulation = (weighted_sum_0 >= THRESHOLD);
+
+	assign ll_test = ll_out;
+	assign ps_test = ps_out;
+	assign ne_test = ne_out;
+	assign theta_test = ps_out_theta;
+	assign alpha_test = ps_out_alpha;
+	assign beta_test = ps_out_beta;
+
 endmodule
+
