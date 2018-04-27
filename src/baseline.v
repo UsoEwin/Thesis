@@ -22,7 +22,22 @@ module baseline #(
 
 // stage 1, compute sliding window for 1s
 reg [7:0] counter_1s;
+reg [5:0] counter_02s;
+wire data_ready_02s;
 wire data_valid_1s;
+
+always @(posedge clk) begin
+	if (rst || counter_02s >= 50) begin
+		// reset
+		counter_02s <= 0;
+	end
+	else 
+		counter_02s <= counter_02s + 1;
+	
+end
+
+assign data_ready_02s = (counter_02s >= 50);
+
 always @(posedge clk) begin
 	if (rst || counter_1s >= 250) begin 
 		counter_1s <= 0;

@@ -74,7 +74,7 @@ grid on;
 subplot(2,1,2);
 plot(t2,dps,'-b');
 hold on;
-%plot(t,psth,'-p');
+plot(t2,baselineps,'Color',[0.85 0.33 0.10]);
 title('Power spectrum data output from simulation','FontSize',22);
 xlabel('data indices','FontSize',22) % x-axis label
 ylabel('feature module outputs','FontSize',22) % y-axis label
@@ -95,7 +95,8 @@ grid on;
 subplot(2,1,2);
 plot(t2,dne,'-b');
 hold on;
-%plot(t,neth,'-p');
+plot(t2,baselinene,'Color',[0.85 0.33 0.10]);
+
 title('Nonlinear energy data output from simulation','FontSize',22);
 xlabel('data indices','FontSize',22) % x-axis label
 ylabel('feature module outputs','FontSize',22) % y-axis label
@@ -116,7 +117,7 @@ grid on;
 subplot(2,1,2);
 plot(t2,dpsalpha,'-b');
 hold on;
-%plot(t,neth,'-p');
+plot(t2,baselinealpha,'Color',[0.85 0.33 0.10]);
 title('Power spectrum alpha band output from simulation','FontSize',22);
 xlabel('data indices','FontSize',22) % x-axis label
 ylabel('feature module outputs','FontSize',22) % y-axis label
@@ -137,7 +138,7 @@ grid on;
 subplot(2,1,2);
 plot(t2,dpsbeta,'-b');
 hold on;
-%plot(t,neth,'-p');
+plot(t2,baselinebeta,'Color',[0.85 0.33 0.10]);
 title('Power spectrum beta band output from simulation','FontSize',22);
 xlabel('data indices','FontSize',22) % x-axis label
 ylabel('feature module outputs','FontSize',22) % y-axis label
@@ -158,7 +159,7 @@ grid on;
 subplot(2,1,2);
 plot(t2,dpstheta,'-b');
 hold on;
-%plot(t,neth,'-p');
+plot(t2,baselinetheta,'Color',[0.85 0.33 0.10]);
 title('Power spectrum theta band output from simulation','FontSize',22);
 xlabel('data indices','FontSize',22) % x-axis label
 ylabel('feature module outputs','FontSize',22) % y-axis label
