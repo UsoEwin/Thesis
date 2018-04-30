@@ -5,7 +5,7 @@
 
 // under testing
 
-module datapath #(
+module datapath_single #(
 	//overall
 	parameter input_width = 32,  
 
