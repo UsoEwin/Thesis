@@ -58,7 +58,7 @@ grid on;
 subplot(2,1,2);
 plot(t2,dll,'-b');
 hold on;
-plot(t2,baselinell,'Color',[0.85 0.33 0.10]);
+plot(t2,baselinell*2,'Color',[0.85 0.33 0.10]);
 %plot(t,llth,'-p');
 hold on;
 plot(t2,thll*1.8,'-g');
