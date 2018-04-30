@@ -11,7 +11,7 @@ input wire clk, reset ;
 
 // filter variables
 wire signed [63:0] b1_in, b2_in, b3_in;
-wire signed [63:0] a2_out, a3_out, a4_out, a5_out, a6_out, a7_out, a8_out, a9_out, a10_out, a11_out, a12_out, a13_out;
+wire signed [63:0] a2_out, a3_out;
 
 // history pipeline regs
 reg signed [63:0] f1_n1, f1_n2;
@@ -19,14 +19,19 @@ reg signed [63:0] f1_n1, f1_n2;
 // history pipeline input
 wire signed [63:0] f1_n1_input, f1_n2_input, f1_n0; 
 
+/****************** Change coefficients here ***************/
+  
 // filter coefficients values
+// a1 is not necessary because default is 1 >> Q-factor
 assign a2 = -113599717;
 assign a3 = -5907013;
-  
+
 assign b1 = 70062371;
 assign b2 = 0;
 assign b3 = -70062371;
-
+  
+/****************** End change coefficients*****************/
+  
 // update filter variables
 assign b1_in = b1*x;
 assign b2_in = b2*x;
