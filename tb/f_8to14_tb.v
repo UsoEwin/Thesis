@@ -30,15 +30,15 @@ module filter_8to14_tb;
 
     initial begin
       $dumpvars;
-      data_file = $fopen("fin", "r");
-      write_file = $fopen("fout_8to14", "w");
+        data_file = $fopen("fin", "r"); // input file
+        write_file = $fopen("fout_8to14", "w"); // output file
       if (data_file != 1'b0)
         $display("data_file handle is successful");
         x = 0; reset = 1; clk = 0; 
         #100;
         reset = 1; #200;
         reset = 0; 
-      repeat(50000) begin
+        repeat(50000) begin // Change here based on your data length
         scan_file = $fscanf(data_file, "%d\n", fin);
         $fwrite(write_file, "%d\n", y);
         x = fin; #100;
