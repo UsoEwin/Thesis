@@ -45,7 +45,7 @@ assign f1_n1_input = b2_in + f1_n2 - a2_out;
 assign f1_n2_input = b3_in - a3_out;
 
 // scale the output and turncate for audio codec
-  assign f1_n0 = $signed((f1_n1 + b1_in) >>> 27);
+  assign f1_n0 = $signed((f1_n1 + b1_in) >>> 27); // Change Q-factor here. Current is 2^27.
   assign y = f1_n0;
 
 // Run the filter state machine at audio sample rate
