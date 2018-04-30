@@ -1,14 +1,8 @@
-test_data = load('testdataint.mat');
+test_data = load('testdataint.mat'); % your pre-filtered MATLAB data
 test_data = test_data.seizuredata;
-y_filt_sos = filter(b,a,test_data);
+y_filt_sos = filter(b,a,test_data); % pass the data through the MATLAB filter
 
-% for k = 1:3
-%     b = sos(k, 1:3);
-%     a = sos(k, 4:6);
-%     y_filt_sos = filter(b, a, y_filt_sos * G(k));
-% end 
-
-Fs = 250;             % Sampling frequency                    
+Fs = 250;             % Edit here to change sampling frequency                    
 T = 1/Fs;             % Sampling period      
 L = 50000;            % Length of signal
 t = (0:L-1)*T;        % Time vector
