@@ -1,6 +1,6 @@
-M_cropped = dlmread("fout_14to32");
-%M_cropped = M_cropped * G(1) * G(2);
-Fs = 250;            % Sampling frequency                    
+M_cropped = dlmread("fout_14to32"); % your filtered Verilog data
+
+Fs = 250;            % Edit here to change sampling frequency                    
 T = 1/Fs;             % Sampling period       
 L = 50000;            % Length of signal
 t = (0:L-1)*T;        % Time vector
